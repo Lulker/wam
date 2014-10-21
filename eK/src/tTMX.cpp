@@ -1,40 +1,61 @@
-int tilewidth;
-int tileheight;
-int width;
-int height;
-std::vector<std::vector<int>> Layers;
+#include <eK.h>
+
+char * freadall(const char * filename){
+  FILE *f = fopen(filename, "rb");
+  fseek(f, 0, SEEK_END);
+  long fsize = ftell(f);
+  fseek(f, 0, SEEK_SET);
+
+  char *string = new char[fsize + 1];
+  fread(string, fsize, 1, f);
+  fclose(f);
+  string[fsize] = 0;
+  return string;
+}
 
 int getint(char *& str){
   int num;
-  for(;;++c)
-    if(*c>('0'-1) && *c<('9'+1))
-      num = (num*10) + (int)(*c-'0');
+  for(;;++str)
+    if(*str>('0'-1) && *str<('9'+1))
+      num = (num*10) + (int)(*str-'0');
   return num;
 }
 
-int getuntil(char *& str, char t){
-  char *end;
-  while(*++end!='"');
-    end = 0;
-
+char * getuntil(char *& str, char t){
+  char * start = str;
+  while(*++str!=t);
+  *str = 0;
+  return start;
 }
 
-void eMap::eMap( , const char* filename, ssize_t offset ){
+void tTMX::draw(int layer, int x0, int x, int y0, int y, float drawx0, float drawy0){
+  int Ax = x-x0;
+  int Ay = y-y0;
+  for(int i=0;i<Ax;++i)
+    for(int j=0;j<Ay;++j)
+      tileset[layers[layer][(x0+i)+((y0+j)*width)]].draw(drawx0+(tilewidth*i),drawy0+(tileheight*j));
+}
+
+tTMX::tTMX( const char * filename, SDL_Renderer * ren ){
+  eDBG(filename);
+  char * c = freadall(filename);
   do{
-    while(*++c!='t');
+    while(*++c!='t') eDBG(*c);
   } while (*++c!='i' || *++c!='l' || *++c!='e' || *++c!='w' || *++c!='i' || *++c!='d' || *++c!='t' || *++c!='h' || *++c!='=');
   tilewidth = getint(c);
+  eDBG(tilewidth);
   do{
     while(*++c!='t');
   } while (*++c!='i' || *++c!='l' || *++c!='e' || *++c!='h' || *++c!='e' || *++c!='i' || *++c!='g' || *++c!='h' || *++c!='t' || *++c!='=');
   tileheight = getint(c);
+  eDBG(tileheight)
   for(;;){
     do{
       while(*++c!='s')
         if(c[0]=='<' && c[1]=='/' && c[2]=='t' && c[3]=='i' && c[4]=='l' && c[5]=='e' && c[6]=='s')
           goto end;
     } while (*++c!='o' || *++c!='u' || *++c!='r' || *++c!='c' || *++c!='e' || *++c!='=' );
-    //LOAD TILE
+    tileset.push_back(tSprite(getuntil(c,'"'),ren));
   }
   end:
   do{
@@ -43,20 +64,21 @@ void eMap::eMap( , const char* filename, ssize_t offset ){
   do{
     while(*++c!='w');
   } while (*++c!='i' || *++c!='d' || *++c!='t' || *++c!='h' || *++c!='=' || *++c!='"');
-  width = getint();
+  width = getint(c);
+  eDBG(width);
   do{
     while(*++c!='h');
   } while (*++c!='e' || *++c!='i' || *++c!='g' || *++c!='h' || *++c!='t' || *++c!='=' || *++c!='"');
-  height = getint();
-
-  for(;;){
+  height = getint(c);
+  eDBG(height);
+  for(int l = 0;;++l){
     do{
       while(*++c!='c')
         if(!*c)
           return;
     } while (*++c!='s' || *++c!='v' || *++c!='"' || *++c!='>');
-
+    layers[l].reserve(width*height);
     while(*c!='<' && *c!=0)
-      getint()
+      layers[l].push_back(getint(c));
   }
 }
