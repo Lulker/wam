@@ -1,8 +1,7 @@
-CXX = g++
 CXXFLAGS = -Ofast -fpic -shared -Wall -std=c++1y -I./inc
-DLL = cmwc.dll
+LIB = $(PRE)CMWC$(DLL)
 
 all:
-	busybox rm -rf bin
+	$(DEL) bin
 	mkdir bin
-	$(CXX) $(CXXFLAGS) src/*.cpp -o bin/$(DLL)
+	$(CXX) $(CXXFLAGS) src/*.cpp -o bin/$(LIB)

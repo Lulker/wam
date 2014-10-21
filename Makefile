@@ -1,18 +1,43 @@
+NAME = WAM
 CMWC = -lCMWC -I./CMWC/inc
-e2D = -le2D -I./e2D/inc -I./SDL2/inc
-LIBS = -mwindows -L./bin $(CMWC) $(e2D)
+eK = -leK -I./eK/inc -I./SDL2/inc
 CXX = g++
 CXXFLAGS = -Ofast -Wall -std=c++1y -I./inc
-NAME = Game
+LDFLAGS = -Wl,-rpath,'$$ORIGIN'
+
+ifeq ($(OS),Windows_NT)
+	EXT = .exe
+	DLL = .dll
+	DEL = rd /s /q
+	COPY = xcopy /e
+	SO = -mwindows
+else
+	EXT = .elf
+	PRE = lib
+	DLL = .so
+	DEL = rm -rf
+	COPY = cp -a
+endif
+
+LIBS = $(SO) -L./bin $(CMWC) $(eK)
+
+export PRE
+export DLL
+export DEL
+export COPY
+export CXX
+export CXXFLAGS
+export LDFLAGS
 
 all:
-	busybox rm -rf bin
+	$(DEL) bin
 	mkdir bin
-	$(MAKE) -C e2D/
-	busybox cp -a e2D/bin/. bin/
-	busybox cp -a SDL2/bin/. bin/
+	mkdir bin/WAM
+	$(MAKE) -C eK/
+	$(COPY) eK/bin/. bin/
+	$(COPY) SDL2/bin/. bin/
 	$(MAKE) -C CMWC/
-	busybox cp -a CMWC/bin/. bin/
+	$(COPY) CMWC/bin/. bin/
 	cd bin
-	busybox cp -a res/. bin/$(NAME)
-	$(CXX) $(CXXFLAGS) src/*.cpp -o bin/$(NAME).exe $(LIBS)
+	$(COPY) res/. bin/$(NAME)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/*.cpp -o bin/$(NAME)$(EXT) $(LIBS)

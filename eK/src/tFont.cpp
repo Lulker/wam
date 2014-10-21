@@ -1,4 +1,4 @@
-#include <e2D.h>
+#include <eK.h>
 
 tFont::tFont( const char *file, const int &&size ){
   location = file;
