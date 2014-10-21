@@ -1,25 +1,27 @@
 NAME = WAM
+CXX = g++
 CMWC = -lCMWC -I./CMWC/inc
 eK = -leK -I./eK/inc -I./SDL2/inc
-CXX = g++
+LIBS = -L./bin $(CMWC) $(eK)
 CXXFLAGS = -Ofast -Wall -std=c++1y -I./inc
 LDFLAGS = -Wl,-rpath,'$$ORIGIN'
 
 ifeq ($(OS),Windows_NT)
 	EXT = .exe
 	DLL = .dll
-	DEL = rd /s /q
+	DEL = -rd /s /q
 	COPY = xcopy /e
-	SO = -mwindows
+	LIBS += -mwindows
+	SEP = \\
+	export SDL2 = -L../SDL2/$(PROCESSOR_ARCHITECTURE)
 else
+	SEP = /
 	EXT = .elf
 	PRE = lib
 	DLL = .so
-	DEL = rm -rf
+	DEL = -rm -rf
 	COPY = cp -a
 endif
-
-LIBS = $(SO) -L./bin $(CMWC) $(eK)
 
 export PRE
 export DLL
@@ -32,12 +34,13 @@ export LDFLAGS
 all:
 	$(DEL) bin
 	mkdir bin
-	mkdir bin/WAM
-	$(MAKE) -C eK/
-	$(COPY) eK/bin/. bin/
-	$(COPY) SDL2/bin/. bin/
-	$(MAKE) -C CMWC/
-	$(COPY) CMWC/bin/. bin/
+	mkdir bin\\WAM
+	$(MAKE) -C eK
+	$(COPY) eK$(SEP)bin$(SEP). bin$(SEP)
+	$(COPY) SDL2$(SEP)$(PROCESSOR_ARCHITECTURE)$(SEP). bin$(SEP)
+	$(MAKE) -C CMWC
+	$(COPY) CMWC$(SEP)bin$(SEP). bin$(SEP)
 	cd bin
-	$(COPY) res/. bin/$(NAME)
+	$(COPY) res$(SEP). bin$(SEP)$(NAME)
+	$(COPY) LICENSES$(SEP). bin
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/*.cpp -o bin/$(NAME)$(EXT) $(LIBS)

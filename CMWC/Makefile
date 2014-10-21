@@ -1,4 +1,4 @@
-CXXFLAGS = -Ofast -fpic -shared -Wall -std=c++1y -I./inc
+CXXFLAGS += -fpic -shared
 LIB = $(PRE)CMWC$(DLL)
 
 all:
