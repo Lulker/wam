@@ -3,6 +3,7 @@
 
 eK::eK( const char *title )
 {
+	eDBG_INIT
 	name = title;
 	chdir(name);
 	assert(!SDL_Init(SDL_INIT_EVERYTHING));
@@ -51,4 +52,9 @@ eK &eK::bg( const int &&r, const int &&g, const int &&b )
 tSprite *eK::sprite(const char* file)
 {
 	return new tSprite(file,ren);
+}
+
+tTMX *eK::tmx(const char* file)
+{
+	return new tTMX(file,ren);
 }

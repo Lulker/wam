@@ -1,12 +1,16 @@
 #pragma once
+#include <cstdio>
 #include <unordered_map>
 #include <functional>
+#include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <assert.h>
+#include <eDBG.h>
 #include <tSprite.h>
 #include <tFont.h>
-#include <assert.h>
+#include <tTMX.h>
 
 class eK
 {
@@ -22,4 +26,5 @@ class eK
 		eK &init( void(*init)(eK&) );
 		eK &bg( const int &&r, const int &&g, const int &&b );
 		tSprite *sprite(const char* file);
+		tTMX *tmx(const char* file);
 };

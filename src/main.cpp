@@ -1,11 +1,11 @@
 #include <eK.h>
 #include <cmwc.h>
-#include <vector>
 #include <ctime>
-#include <functional>
+
 #define rand prng.rand
 
 std::vector<tSprite*> sprites;
+tTMX * map;
 
 void draw(eK & ge)
 {
@@ -16,6 +16,7 @@ void init(eK & ge)
 {
 	sprites.reserve(100);
 	sprites[0] = ge.sprite("gfx/character.bmp");
+	map = ge.tmx("maps/Map1.tmx");
 	ge.on[SDL_QUIT] = [](eK & ge,SDL_Event & e){exit(0);};
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
