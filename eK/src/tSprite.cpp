@@ -1,4 +1,4 @@
-#include <e2D.h>
+#include <eK.h>
 #include <iterator>
 
 tSprite::tSprite( const char *file, SDL_Renderer *renderer )

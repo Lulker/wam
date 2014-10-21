@@ -1,5 +1,5 @@
 #pragma once
-#include <e2D.h>
+#include <eK.h>
 
 class tSprite
 {

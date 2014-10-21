@@ -1,7 +1,7 @@
-#include <e2D.h>
+#include <eK.h>
 #include <unistd.h>
 
-e2D::e2D( const char *title )
+eK::eK( const char *title )
 {
 	name = title;
 	chdir(name);
@@ -11,7 +11,7 @@ e2D::e2D( const char *title )
 	ren = assert(SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
 };
 
-e2D::~e2D()
+eK::~eK()
 {
 	if(ren)
 		SDL_DestroyRenderer(ren);
@@ -22,13 +22,13 @@ e2D::~e2D()
 	SDL_Quit();
 };
 
-e2D &e2D::init( void(*init)(e2D&) )
+eK &eK::init( void(*init)(eK&) )
 {
 	init(*this);
 	return *this;
 };
 
-int e2D::loop( void(*draw)(e2D&) )
+int eK::loop( void(*draw)(eK&) )
 {
 	SDL_Event e;
 	for(;;)
@@ -42,13 +42,13 @@ int e2D::loop( void(*draw)(e2D&) )
 	}
 };
 
-e2D &e2D::bg( const int &&r, const int &&g, const int &&b )
+eK &eK::bg( const int &&r, const int &&g, const int &&b )
 {
 	SDL_SetRenderDrawColor(ren, r, g, b, 255);
 	return *this;
 };
 
-tSprite *e2D::sprite(const char* file)
+tSprite *eK::sprite(const char* file)
 {
 	return new tSprite(file,ren);
 }
