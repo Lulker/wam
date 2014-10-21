@@ -1,18 +1,46 @@
-CMWC = -lCMWC -I./CMWC/inc
-e2D = -le2D -I./e2D/inc -I./SDL2/inc
-LIBS = -mwindows -L./bin $(CMWC) $(e2D)
+NAME = WAM
 CXX = g++
+CMWC = -lCMWC -I./CMWC/inc
+eK = -leK -I./eK/inc -I./SDL2/inc
+LIBS = -L./bin $(CMWC) $(eK)
 CXXFLAGS = -Ofast -Wall -std=c++1y -I./inc
-NAME = Game
+LDFLAGS = -Wl,-rpath,'$$ORIGIN'
+
+ifeq ($(OS),Windows_NT)
+	EXT = .exe
+	DLL = .dll
+	DEL = -rd /s /q
+	COPY = xcopy /e
+	LIBS += -mwindows
+	SEP = \\
+	export SDL2 = -L../SDL2/$(PROCESSOR_ARCHITECTURE)
+else
+	SEP = /
+	EXT = .elf
+	PRE = lib
+	DLL = .so
+	DEL = -rm -rf
+	COPY = cp -a
+endif
+
+export PRE
+export DLL
+export DEL
+export COPY
+export CXX
+export CXXFLAGS
+export LDFLAGS
 
 all:
-	busybox rm -rf bin
+	$(DEL) bin
 	mkdir bin
-	$(MAKE) -C e2D/
-	busybox cp -a e2D/bin/. bin/
-	busybox cp -a SDL2/bin/. bin/
-	$(MAKE) -C CMWC/
-	busybox cp -a CMWC/bin/. bin/
+	mkdir bin\\WAM
+	$(MAKE) -C eK
+	$(COPY) eK$(SEP)bin$(SEP). bin$(SEP)
+	$(COPY) SDL2$(SEP)$(PROCESSOR_ARCHITECTURE)$(SEP). bin$(SEP)
+	$(MAKE) -C CMWC
+	$(COPY) CMWC$(SEP)bin$(SEP). bin$(SEP)
 	cd bin
-	busybox cp -a res/. bin/$(NAME)
-	$(CXX) $(CXXFLAGS) src/*.cpp -o bin/$(NAME).exe $(LIBS)
+	$(COPY) res$(SEP). bin$(SEP)$(NAME)
+	$(COPY) LICENSES$(SEP). bin
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/*.cpp -o bin/$(NAME)$(EXT) $(LIBS)
