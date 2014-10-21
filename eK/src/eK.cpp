@@ -10,6 +10,7 @@ eK::eK( const char *title )
 	assert(TTF_Init()!=-1);
 	win = assert(SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 0, 0, SDL_WINDOW_SHOWN|SDL_WINDOW_BORDERLESS|SDL_WINDOW_MAXIMIZED));
 	ren = assert(SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
+	SDL_GetWindowSize(win,&width,&height);
 };
 
 eK::~eK()
@@ -43,7 +44,7 @@ int eK::loop( void(*draw)(eK&) )
 	}
 };
 
-eK &eK::bg( const int &&r, const int &&g, const int &&b )
+eK &eK::bg( const int &&r, const int &&g, const int &&b)
 {
 	SDL_SetRenderDrawColor(ren, r, g, b, 255);
 	return *this;
@@ -54,7 +55,7 @@ tSprite *eK::sprite(const char* file)
 	return new tSprite(file,ren);
 }
 
-tTMX *eK::tmx(const char* file)
+tTMX *eK::tmx(const char* file, const int & offset)
 {
-	return new tTMX(file,ren);
+	return new tTMX(file,ren,offset);
 }

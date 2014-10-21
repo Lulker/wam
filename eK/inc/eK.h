@@ -19,6 +19,8 @@ class eK
 		SDL_Renderer *ren = 0;
 		const char *name;
 	public:
+		int height;
+		int width;
 		std::unordered_map<int,std::function<void(eK&,SDL_Event&)>> on;
 		eK( const char *title );
 		~eK();
@@ -26,5 +28,5 @@ class eK
 		eK &init( void(*init)(eK&) );
 		eK &bg( const int &&r, const int &&g, const int &&b );
 		tSprite *sprite(const char* file);
-		tTMX *tmx(const char* file);
+		tTMX *tmx(const char* file, const int & offset);
 };
