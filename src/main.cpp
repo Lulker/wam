@@ -41,13 +41,14 @@ void init(eK & ge)
 int WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	std::string name(GetCommandLine());
-	*(&name[0] + name.find_last_of(".")) = 0;
 	const char * program = &name[0] + 1 + name.find_last_of("\\");
 #else
 int main(int argc, char const *argv[])
 {
-	const char * program = argv[0];
+	std::string name = argv[0];
+	const char * program = &name[0];
 #endif
+	*(&name[0] + name.find_last_of(".")) = 0;
 	cmwc prng(time(0));
 	return eK(program).init(init).loop(draw);
 }
