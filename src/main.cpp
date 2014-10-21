@@ -2,13 +2,15 @@
 #include <cmwc.h>
 #include <ctime>
 
-#define rand prng.rand
+#define rand prng->rand
 
 std::vector<tSprite*> sprites;
 tTMX * map;
+cmwc * prng;
 
 void draw(eK & ge)
 {
+	map->draw(0, 0, 99, 0, 99, 0, 0);
 	sprites[0]->draw( 0,0 );
 };
 
@@ -16,7 +18,7 @@ void init(eK & ge)
 {
 	sprites.reserve(100);
 	sprites[0] = ge.sprite("gfx/character.bmp");
-	map = ge.tmx("maps/Map1.tmx");
+	map = ge.tmx("maps/Map1.tmx",4);
 	ge.on[SDL_QUIT] = [](eK & ge,SDL_Event & e){exit(0);};
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
@@ -50,6 +52,6 @@ int main(int argc, char const *argv[])
 	const char * program = &name[0];
 #endif
 	*(&name[0] + name.find_last_of(".")) = 0;
-	cmwc prng(time(0));
+	prng = new cmwc(time(0));
 	return eK(program).init(init).loop(draw);
 }
