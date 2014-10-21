@@ -1,7 +1,6 @@
-SDL2 = -lSDL2 -lSDL2_ttf -lSDL2_image -I../SDL2/inc
-CXXFLAGS = -Ofast -fpic -shared -Wall -std=c++1y -I./inc
+SDL2 += -lSDL2 -lSDL2_ttf -lSDL2_image -I../SDL2/inc
+CXXFLAGS += -fpic -shared
 LIB = $(PRE)eK$(DLL)
-
 all:
 	$(DEL) bin
 	mkdir bin
