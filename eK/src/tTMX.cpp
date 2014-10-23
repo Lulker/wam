@@ -29,10 +29,10 @@ char * getuntil(char *& str, char t){
 }
 
 void tTMX::draw(int layer, int x0, int x, int y0, int y, float drawx0, float drawy0){
-  int Ax = x-x0;
-  int Ay = y-y0;
-  for(int i=0;i<Ax;++i)
-    for(int j=0;j<Ay;++j)
+  int Ax = (x>width)?width-x0:x-x0;
+  int Ay = (y>height)?height-y0:y-y0;
+  for(int i=(x0<0)?-x0:0;i<Ax;++i)
+    for(int j=(y0<0)?-y0:0;j<Ay;++j)
         tileset[layers[layer][(x0+i)+((y0+j)*width)]]->draw(drawx0+(tilewidth*i),drawy0+(tileheight*j));
 }
 
