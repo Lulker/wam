@@ -8,6 +8,7 @@ std::vector<tSprite*> sprites;
 tTMX * map;
 cmwc * prng;
 
+//Character variables for the position and movement
 int x_pos = 0;
 int y_pos = 0;
 int c_speed = 64;
