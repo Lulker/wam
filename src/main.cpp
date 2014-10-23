@@ -8,8 +8,9 @@ std::vector<tSprite*> sprites;
 tTMX * map;
 cmwc * prng;
 
-int x_pos = 6;
-int y_pos = 6;
+int x_pos = 0;
+int y_pos = 0;
+int c_speed = 64;
 
 void draw(eK & ge)
 {
@@ -26,19 +27,18 @@ void init(eK & ge)
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
 			case SDLK_s:
-					y_pos = y_pos + 3;
+					y_pos = y_pos + c_speed;
 				break;
 			case SDLK_w:
-					y_pos = y_pos - 3;
+					y_pos = y_pos - c_speed;
 				break;
 			case SDLK_d:
-					x_pos = x_pos + 3;
+					x_pos = x_pos + c_speed;
 				break;
 			case SDLK_a:
-					x_pos = x_pos - 3;
+					x_pos = x_pos - c_speed;
 				break;
 		};
-		
 	};
 /*
 	ge.on[SDL_KEYUP] = [](eK& ge,SDL_Event& e){exit(0);};
