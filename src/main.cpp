@@ -23,7 +23,7 @@ void init(eK & ge)
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
 			case SDLK_w:
-
+					
 				break;
 		};
 	};
