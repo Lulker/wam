@@ -77,8 +77,8 @@ tTMX::tTMX( const char * filename, SDL_Renderer * ren , const int & offset ){
     int * layer = new int[size];
     ++c;
     for(int i=0; i<size; ++i){
-      for(;*c==','||*c=='\n'||*c=='\r';++c) eDBG(*c);
-      layer[i] = getint(c);
+      for(;*c==','||*c=='\n'||*c=='\r';++c);
+      layer[i] = getint(c)-1;
     }
     layers.push_back(layer);
   }
