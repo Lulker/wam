@@ -9,14 +9,13 @@ tTMX * map;
 cmwc * prng;
 
 //Character variables for the position and movement
-int x_pos = 0;
-int y_pos = 0;
-int c_speed = 64;
+int x_cell = 0;
+int y_cell = 0;
 
 void draw(eK & ge)
 {
-	map->draw(0, 0, 99, 0, 99, 0, 0);
-	sprites[0]->draw( x_pos, y_pos );
+	map->draw(0, x_cell, ge.width/64+1+x_cell, y_cell, ge.height/64+1+y_cell, -ge.width%64+32, -ge.height%64+32);
+	sprites[0]->draw( ge.width/2-32, ge.height/2-32 );
 };
 
 void init(eK & ge)
@@ -28,16 +27,23 @@ void init(eK & ge)
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
 			case SDLK_s:
-					y_pos = y_pos + c_speed;
+			if(y_cell < 94)
+					y_cell++;
 				break;
 			case SDLK_w:
-					y_pos = y_pos - c_speed;
+			if (y_cell > -5)
+					y_cell--;
 				break;
 			case SDLK_d:
-					x_pos = x_pos + c_speed;
+			if(x_cell > 95)
+					x_cell++;
 				break;
 			case SDLK_a:
-					x_pos = x_pos - c_speed;
+			if(x_cell < -4)
+					x_cell--;
+				break;
+			case SDLK_ESCAPE:
+					exit(0);
 				break;
 		};
 	};
