@@ -35,11 +35,11 @@ void init(eK & ge)
 					y_cell--;
 				break;
 			case SDLK_d:
-			if(x_cell > 95)
+			if(x_cell < 89)
 					x_cell++;
 				break;
 			case SDLK_a:
-			if(x_cell < -4)
+			if(x_cell > -10)
 					x_cell--;
 				break;
 			case SDLK_ESCAPE:
