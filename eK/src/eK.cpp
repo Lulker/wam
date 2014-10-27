@@ -1,8 +1,8 @@
-#include <eK.h>
+#include <eK.hpp>
 #include <unistd.h>
+#include <SDL_ttf.h>
 
-eK::eK( const char *title )
-{
+eK::eK(const char *title){
 	eDBG_INIT
 	name = title;
 	chdir(name);
@@ -11,10 +11,9 @@ eK::eK( const char *title )
 	win = assert(SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 0, 0, SDL_WINDOW_SHOWN|SDL_WINDOW_BORDERLESS|SDL_WINDOW_MAXIMIZED));
 	ren = assert(SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
 	SDL_GetWindowSize(win,&width,&height);
-};
+}
 
-eK::~eK()
-{
+eK::~eK(){
 	if(ren)
 		SDL_DestroyRenderer(ren);
 	if(win)
@@ -22,19 +21,17 @@ eK::~eK()
 	if(TTF_WasInit())
 		TTF_Quit();
 	SDL_Quit();
-};
+}
 
-eK &eK::init( void(*init)(eK&) )
-{
+eK &eK::init(void(*init)(eK&)){
+	on[SDL_QUIT] = [](eK & ge,SDL_Event & e){exit(0);};
 	init(*this);
 	return *this;
-};
+}
 
-int eK::loop( void(*draw)(eK&) )
-{
+int eK::loop(void(*draw)(eK&)){
 	SDL_Event e;
-	for(;;)
-	{
+	for(;;){
 		SDL_RenderClear(ren);
 		while(SDL_PollEvent(&e))
 			if(on[e.type])
@@ -42,20 +39,16 @@ int eK::loop( void(*draw)(eK&) )
 		draw(*this);
 		SDL_RenderPresent(ren);
 	}
-};
+}
 
-eK &eK::bg( const int &&r, const int &&g, const int &&b)
-{
+void eK::bg(const int &&r, const int &&g, const int &&b){
 	SDL_SetRenderDrawColor(ren, r, g, b, 255);
-	return *this;
-};
+}
 
-tSprite *eK::sprite(const char* file)
-{
+tSprite *eK::sprite(const char *file){
 	return new tSprite(file,ren);
 }
 
-tTMX *eK::tmx(const char* file, const int & offset)
-{
-	return new tTMX(file,ren,offset);
+tTMX *eK::tmx(const char *file, const int &offset){
+	return new tTMX(file,*this,offset);
 }
