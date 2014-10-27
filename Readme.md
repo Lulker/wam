@@ -20,5 +20,5 @@ War Among Minds is an open-source limited-resources spell-casting moba where eve
 ```
   git clone https://github.com/Lulker/wam.git
   cd wam
-  make
+  make release
 ```
