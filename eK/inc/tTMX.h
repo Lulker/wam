@@ -12,6 +12,7 @@ class tTMX
     int width;
     int height;
     int size;
-    tTMX( const char * filename, SDL_Renderer * ren , const int & offset );
+    tTMX( const char * filename, SDL_Renderer * ren , const int & offset);
+    void camera(float x, float y, int width, int height);
     void draw(int layer, int x0, int x, int y0, int y, float drawx0, float drawy0);
 };

@@ -8,14 +8,14 @@ std::vector<tSprite*> sprites;
 tTMX * map;
 cmwc * prng;
 
-//Character variables for the position and movement
-int x_cell = 0;
-int y_cell = 0;
+//Character variables for the position and movement (to be moved to character class)
+float x_cell = 10;
+float y_cell = 10;
 
 void draw(eK & ge)
 {
-	map->draw(0, x_cell, ge.width/64+1+x_cell, y_cell, ge.height/64+1+y_cell, -ge.width%64+32, -ge.height%64+32);
-	sprites[0]->draw( ge.width/2-32, ge.height/2-32 );
+	map->camera(x_cell,y_cell,(long)(ge.width/(2*64))+1,(long)(ge.height/(2*64))+1);
+	sprites[0]->draw( ge.width/2, ge.height/2 );
 };
 
 void init(eK & ge)
@@ -27,20 +27,16 @@ void init(eK & ge)
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
 			case SDLK_s:
-			if(y_cell < 94)
-					y_cell++;
+					y_cell+=(float)1/64;
 				break;
 			case SDLK_w:
-			if (y_cell > -5)
-					y_cell--;
+					y_cell-=(float)1/64;
 				break;
 			case SDLK_d:
-			if(x_cell < 89)
-					x_cell++;
+					x_cell+=(float)1/64;
 				break;
 			case SDLK_a:
-			if(x_cell > -10)
-					x_cell--;
+					x_cell-=(float)1/64;
 				break;
 			case SDLK_ESCAPE:
 					exit(0);
