@@ -1,8 +1,6 @@
-#include <eK.h>
+#include <eK.hpp>
 #include <cmwc.h>
 #include <ctime>
-
-#define rand prng->rand
 
 std::vector<tSprite*> sprites;
 tTMX * map;
@@ -14,7 +12,7 @@ float y_cell = 10;
 
 void draw(eK & ge)
 {
-	map->camera(x_cell,y_cell,(long)(ge.width/(2*64))+1,(long)(ge.height/(2*64))+1);
+	map->camera(0, 1, x_cell,y_cell,(long)(ge.width/(2*64))+1,(long)(ge.height/(2*64))+1);
 	sprites[0]->draw( ge.width/2, ge.height/2 );
 };
 
@@ -23,7 +21,6 @@ void init(eK & ge)
 	sprites.reserve(100);
 	sprites[0] = ge.sprite("gfx/character.bmp");
 	map = ge.tmx("maps/Map1.tmx",4);
-	ge.on[SDL_QUIT] = [](eK & ge,SDL_Event & e){exit(0);};
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
 			case SDLK_s:
