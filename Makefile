@@ -1,6 +1,7 @@
-.PHONY: debug release all
+.PHONY: debug release legacy all
 debug: CXXFLAGS = -DeDBG_ON=1
 debug: eDBG = -L../eDBG/bin -leDBG
+legacy: CXXFLAGS = -m32
 NAME = WAM
 CXX = g++
 CMWC = -lCMWC -I./CMWC/inc
@@ -17,7 +18,7 @@ ifeq ($(OS),Windows_NT)
 	COPY = -xcopy /e
 	LIBS += -mwindows
 	SEP = \\
-	export SDL2 = -L../SDL2/$(PROCESSOR_ARCHITECTURE)
+	SDL2 = -L../SDL2/$(PROCESSOR_ARCHITECTURE)
 else
 	SEP = /
 	EXT = .elf
@@ -27,6 +28,8 @@ else
 	COPY = -cp -a
 endif
 
+legacy: SDL2 = -L../SDL2/x86
+
 export PRE
 export DLL
 export DEL
@@ -35,6 +38,7 @@ export CXX
 export CXXFLAGS
 export LDFLAGS
 export eDBG
+export SDL2
 
 debug:
 	$(DEL) bin
@@ -44,6 +48,9 @@ debug:
 	$(MAKE) -C eDBG
 	$(COPY) EDBG$(SEP)bin$(SEP). bin$(SEP)
 	make all
+
+legacy:
+	make release
 
 release:
 	$(DEL) bin
