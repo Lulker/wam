@@ -19,7 +19,7 @@ void draw(eK & ge)
 void init(eK & ge)
 {
 	sprites.reserve(100);
-	sprites[0] = ge.sprite("gfx/character.bmp");
+	sprites[0] = ge.sprite("gfx/character.png");
 	map = ge.tmx("maps/Map1.tmx",4);
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
