@@ -35,7 +35,7 @@ class tObject {
 class tSprite {
 	friend class eK;
 	private:
-		SDL_Texture *tex = 0;
+		SDL_Texture *tex;
 		SDL_Rect dst;
 		SDL_Renderer *ren;
 		tSprite(const char *file, SDL_Renderer *renderer);
