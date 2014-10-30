@@ -7,6 +7,7 @@ tObject::tObject(tSprite *sprite, float x, float y, float speed){
   cx = x;
   cy = y;
   s = sprite;
+  move(cx,cy);
 }
 
 void tObject::move(int tx, int ty){
@@ -20,7 +21,7 @@ void tObject::move(int tx, int ty){
 
 tObject *tObject::update(){
   float At = (duration_cast<duration<float>>(steady_clock::now() - move_timestamp)).count();
-  if(ms*At > Axy)
+  if(ms*At >= Axy)
     return this;
   cx = x0 + (Ax/Axy)*ms*At;
   cy = y0 + (Ay/Axy)*ms*At;
