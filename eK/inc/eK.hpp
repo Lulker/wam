@@ -25,10 +25,22 @@ class tObject {
 		std::chrono::steady_clock::time_point move_timestamp;
 		tObject(tSprite *sprite, float x, float y, float speed);
 	public:
+		///Current X position
 		float cx;
+		///Current Y position
 		float cy;
+		/**
+		* Starts moving object to target position
+		* @param x horizontal position in map
+		* @param y vertical position in map
+		**/
 		void move(int x, int y);
+		/**
+		* Draws object in a map, using that map last camera render
+		* @param map a pointer to the map
+		**/
 		void draw(tTMX *map);
+		///Updates the object state/position
 		tObject *update();
 };
 
