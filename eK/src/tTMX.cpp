@@ -28,10 +28,6 @@ char *getuntil(char *&str, char t){
   return start;
 }
 
-void tTMX::magic(int x, int y){
-  layers[0][x+(y*width)] = 9;
-}
-
 void tTMX::camera(int layer0, int layer, float x, float y, int Ax, int Ay){
   float drawx = (x-(long)x)*-tilewidth;
   float drawy = (y-(long)y)*-tileheight;
