@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <functional>
 #include <vector>
+#include <chrono>
 #include <SDL.h>
 #include <assert.h>
 #include <eDBG.h>
@@ -9,6 +10,27 @@
 class eK;
 class tTMX;
 class tSprite;
+class tObject;
+
+class tObject {
+	friend class tSprite;
+	private:
+		tSprite *s;
+		float x0;
+		float y0;
+		float Ax;
+		float Ay;
+		float Axy;
+		float ms;
+		std::chrono::steady_clock::time_point move_timestamp;
+		tObject(tSprite *sprite, float x, float y, float speed);
+	public:
+		float cx;
+		float cy;
+		void move(int x, int y);
+		void draw(tTMX *map);
+		tObject *update();
+};
 
 class tSprite {
 	friend class eK;
@@ -19,11 +41,18 @@ class tSprite {
 		tSprite(const char *file, SDL_Renderer *renderer);
 	public:
 		/**
-		* Dibuja el sprite en la posición x, y de la pantalla
-		* @param x posición en el eje de las x
-		* @param y posición en el eje de las y
+		* Draws sprite in a position of the screen
+		* @param x horizontal position in screen
+		* @param y vertical position in screen
 		**/
 		void draw(int x = 0, int y = 0);
+		/**
+		* Creates an object
+		* @param x horizontal position in map
+		* @param y vertical position in map
+		* @param speed optional parameter to set object move speed in tiles per second
+		**/
+		tObject *object(float x, float y, float speed = 0);
 };
 
 class tTMX {
@@ -77,7 +106,6 @@ class tTMX {
 		* @return y position in screen
 		**/
 		float ytracecast(const float &y);
-		void magic(int x, int y);
 };
 
 class eK {
@@ -109,29 +137,28 @@ class eK {
 		**/
 		eK &init(void(*init)(eK&));
 		/**
-		* Empieza el loop principal del juego
-		* @param draw función que recibe como parámetro el motor
-		* @return un entero correspondiente al valor de salida del loop
+		* Starts game loop
+		* @param draw function that is iterated forever
 		**/
 		int loop(void(*draw)(eK&));
 		/**
-		* Cambia el color en el que se pintará el fondo
+		* Sets background color
 		* @param r red
 		* @param g green
 		* @param b blue
 		**/
 		void bg(const int &&r, const int &&g, const int &&b);
 		/**
-		* Carga una imágen como sprite
-		* @param file el nombre del archivo a cargar
-		* @return un puntero al sprite en cuestión
+		* Loads sprite from a file
+		* @param file name of the sprite file to load
+		* @return pointer to the created sprite
 		**/
 		tSprite *sprite(const char *file);
 		/**
-		* Carga el mapa de un archivo
-		* @param file el nombre del archivo a cargar
-		* @param offset número de carácteres a ignorar en el path de los sprites
-		* @return un puntero al mapa en cuestión
+		* Loads map from a file
+		* @param file name of the map file to load
+		* @param offset number of characters to ignore in sprite path
+		* @return pointer to the map sprite
 		**/
 		tTMX *tmx(const char *file, const int &offset);
 };

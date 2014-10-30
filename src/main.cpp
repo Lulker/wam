@@ -7,39 +7,23 @@ tTMX * map;
 cmwc * prng;
 
 //Character variables for the position and movement (to be moved to character class)
-float x_cell = 10;
-float y_cell = 10;
-tSprite * mc;
+tObject * mc;
 
 void draw(eK & ge)
 {
-	map->camera(0, 1, x_cell,y_cell,(long)(ge.width/(2*64))+1,(long)(ge.height/(2*64))+1);
-	mc->draw( ge.width/2, ge.height/2 );
+	map->camera(0, 1, mc->cx,mc->cy,(long)(ge.width/(2*64))+1,(long)(ge.height/(2*64))+1);
+	mc->update()->draw(map);
 };
 
 void init(eK & ge)
 {
-	mc = ge.sprite("gfx/character.png");
+	mc = ge.sprite("gfx/character.png")->object(10,10,2);
 	map = ge.tmx("maps/Map1.tmx",4);
 	ge.on[SDL_MOUSEBUTTONDOWN] = [](eK& ge,SDL_Event& e){
-		x_cell = map->xraycast(e.button.x);
-		y_cell = map->yraycast(e.button.y);
-		map->magic((int)x_cell,(int)y_cell);
+		mc->move(map->xraycast(e.button.x),map->yraycast(e.button.y));
 	};
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
-			case SDLK_s:
-					y_cell+=(float)1/64;
-				break;
-			case SDLK_w:
-					y_cell-=(float)1/64;
-				break;
-			case SDLK_d:
-					x_cell+=(float)1/64;
-				break;
-			case SDLK_a:
-					x_cell-=(float)1/64;
-				break;
 			case SDLK_ESCAPE:
 					exit(0);
 				break;
