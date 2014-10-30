@@ -28,9 +28,15 @@ char *getuntil(char *&str, char t){
   return start;
 }
 
+void tTMX::magic(int x, int y){
+  layers[0][x+(y*width)] = 9;
+}
+
 void tTMX::camera(int layer0, int layer, float x, float y, int Ax, int Ay){
   float drawx = (x-(long)x)*-tilewidth;
   float drawy = (y-(long)y)*-tileheight;
+  xo = x-Ax;
+  yo = y-Ay;
   int x0 = ((long)x)-Ax;
   int y0 = ((long)y)-Ay;
   Ax = (x0+(Ax<<1)>width)?width-x0:Ax<<1;
@@ -39,6 +45,22 @@ void tTMX::camera(int layer0, int layer, float x, float y, int Ax, int Ay){
     for(int j=(y0<0)?-y0:0;j<Ay;++j)
       for(int l=layer0;l<layer;++l)
         tileset[layers[l][(x0+i)+((y0+j)*width)]]->draw(drawx+(tilewidth*i),drawy+(tileheight*j));
+}
+
+float tTMX::xraycast(const int &x){
+  return xo+((float)x/(float)tilewidth);
+}
+
+float tTMX::yraycast(const int &y){
+  return yo+((float)y/(float)tileheight);
+}
+
+float tTMX::xtracecast(const float &x){
+  return x-xo;
+}
+
+float tTMX::ytracecast(const float &y){
+  return y-yo;
 }
 
 tTMX::tTMX(const char *file, eK &ek, const int &offset){
