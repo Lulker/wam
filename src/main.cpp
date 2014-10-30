@@ -14,6 +14,7 @@ tSprite * mc;
 void draw(eK & ge)
 {
 	map->camera(0, 1, x_cell,y_cell,(long)(ge.width/(2*64))+1,(long)(ge.height/(2*64))+1);
+	mc->draw( ge.width/2, ge.height/2 );
 };
 
 void init(eK & ge)
@@ -21,9 +22,9 @@ void init(eK & ge)
 	mc = ge.sprite("gfx/character.png");
 	map = ge.tmx("maps/Map1.tmx",4);
 	ge.on[SDL_MOUSEBUTTONDOWN] = [](eK& ge,SDL_Event& e){
-		float x = map->xraycast(e.button.x);
-		float y = map->yraycast(e.button.y);
-		map->magic((int)x,(int)y);
+		x_cell = map->xraycast(e.button.x);
+		y_cell = map->yraycast(e.button.y);
+		map->magic((int)x_cell,(int)y_cell);
 	};
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
