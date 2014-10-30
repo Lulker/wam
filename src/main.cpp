@@ -18,7 +18,12 @@ void init(eK & ge){
 	mc = ge.sprite("gfx/character.png")->object(10,10,2);
 	map = ge.tmx("maps/Map1.tmx",4);
 	ge.on[SDL_MOUSEBUTTONDOWN] = [](eK& ge,SDL_Event& e){
-		mc->move(map->xraycast(e.button.x),map->yraycast(e.button.y));
+		if(e.button.type == SDL_MOUSEBUTTONDOWN)
+			switch(e.button.button){
+				case SDL_BUTTON_LEFT:
+					mc->move(map->xraycast(e.button.x),map->yraycast(e.button.y));
+					break;
+			}
 	};
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
