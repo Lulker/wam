@@ -32,6 +32,8 @@ class tTMX {
 		std::vector<tSprite*> tileset;
 		std::vector<int*> layers;
 		tTMX(const char *file, eK &ek, const int &offset);
+		float xo;
+		float yo;
 	public:
 		///Map tile width
 		int tilewidth;
@@ -51,6 +53,31 @@ class tTMX {
 		* @param Ay vertical radius of sight
 		**/
 		void camera(int layer0, int layer, float x, float y, int Ax, int Ay);
+		/**
+		* Gets x map position from screen position
+		* @param x position in screen
+		* @return x position in map
+		**/
+		float xraycast(const int &x);
+		/**
+		* Gets y map position from screen position
+		* @param y position in screen
+		* @return y position in map
+		**/
+		float yraycast(const int &y);
+		/**
+		* Gets x screen position from map position
+		* @param x position in map
+		* @return x position in screen
+		**/
+		float xtracecast(const float &x);
+		/**
+		* Gets y screen position from map position
+		* @param y position in map
+		* @return y position in screen
+		**/
+		float ytracecast(const float &y);
+		void magic(int x, int y);
 };
 
 class eK {

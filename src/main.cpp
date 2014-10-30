@@ -9,18 +9,22 @@ cmwc * prng;
 //Character variables for the position and movement (to be moved to character class)
 float x_cell = 10;
 float y_cell = 10;
+tSprite * mc;
 
 void draw(eK & ge)
 {
 	map->camera(0, 1, x_cell,y_cell,(long)(ge.width/(2*64))+1,(long)(ge.height/(2*64))+1);
-	sprites[0]->draw( ge.width/2, ge.height/2 );
 };
 
 void init(eK & ge)
 {
-	sprites.reserve(100);
-	sprites[0] = ge.sprite("gfx/character.png");
+	mc = ge.sprite("gfx/character.png");
 	map = ge.tmx("maps/Map1.tmx",4);
+	ge.on[SDL_MOUSEBUTTONDOWN] = [](eK& ge,SDL_Event& e){
+		float x = map->xraycast(e.button.x);
+		float y = map->yraycast(e.button.y);
+		map->magic((int)x,(int)y);
+	};
 	ge.on[SDL_KEYDOWN] = [](eK & ge,SDL_Event & e){
 		switch(e.key.keysym.sym){
 			case SDLK_s:

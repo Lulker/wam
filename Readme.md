@@ -12,6 +12,7 @@ War Among Minds is an open-source limited-resources spell-casting moba where eve
 * Classes start with a lowercase character (for class-type declaration), then PascalCase
 * Methods and Attributes are lowercase, using underscore separation whenever needed
 * K&R Style indentation where braces are omitted whenever possible
+* Function definition does not end with ; unless mandatory
 
 #Compile instructions
 
