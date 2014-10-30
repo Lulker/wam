@@ -37,9 +37,9 @@ void tTMX::camera(int layer0, int layer, float x, float y, int Ax, int Ay){
   int y0 = ((long)y)-Ay;
   Ax = (x0+(Ax<<1)>width)?width-x0:Ax<<1;
   Ay = (y0+(Ay<<1)>height)?height-y0:Ay<<1;
-  for(int i=(x0<0)?-x0:0;i<Ax;++i)
+  for(int l=layer0;l<layer;++l)
     for(int j=(y0<0)?-y0:0;j<Ay;++j)
-      for(int l=layer0;l<layer;++l)
+      for(int i=(x0<0)?-x0:0;i<Ax;++i)
         tileset[layers[l][(x0+i)+((y0+j)*width)]]->draw(drawx+(tilewidth*i),drawy+(tileheight*j));
 }
 
