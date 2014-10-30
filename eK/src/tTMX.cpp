@@ -56,11 +56,11 @@ float tTMX::yraycast(const int &y){
 }
 
 float tTMX::xtracecast(const float &x){
-  return x-xo;
+  return (x-xo)*tilewidth;
 }
 
 float tTMX::ytracecast(const float &y){
-  return y-yo;
+  return (y-yo)*tileheight;
 }
 
 tTMX::tTMX(const char *file, eK &ek, const int &offset){
