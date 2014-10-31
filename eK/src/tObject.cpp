@@ -10,13 +10,19 @@ tObject::tObject(tSprite *sprite, float x, float y, float speed){
   move(cx,cy);
 }
 
-void tObject::move(int tx, int ty){
+tObject *tObject::move(int tx, int ty){
   x0 = cx;
   y0 = cy;
   Ax = tx-cx;
   Ay = ty-cy;
   Axy = sqrt(Ax*Ax + Ay*Ay);
   move_timestamp = steady_clock::now();
+  return this;
+}
+
+tObject *tObject::aim(){
+  rot = atan2(Ay,Ax)*180/M_PI;
+  return this;
 }
 
 tObject *tObject::update(){
@@ -28,6 +34,7 @@ tObject *tObject::update(){
   return this;
 }
 
-void tObject::draw(tTMX *map){
-  s->draw(map->xtracecast(cx),map->ytracecast(cy));
+tObject *tObject::draw(tTMX *map){
+  s->draw(map->xtracecast(cx),map->ytracecast(cy),rot);
+  return this;
 }
