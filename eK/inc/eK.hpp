@@ -51,7 +51,6 @@ class tSprite {
 		SDL_Texture *tex;
 		SDL_Rect dst;
 		SDL_Renderer *ren;
-	protected:
 		tSprite(const char *file, SDL_Renderer *renderer);
 	public:
 		/**
@@ -76,7 +75,6 @@ class tTMX {
 		std::vector<int*> layers;
 		float xo;
 		float yo;
-	protected:
 		tTMX(const char *file, eK &ek, const int &offset);
 	public:
 		///Map tile width
