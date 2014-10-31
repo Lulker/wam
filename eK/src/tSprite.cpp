@@ -9,10 +9,10 @@ tSprite::tSprite(const char *file, SDL_Renderer *renderer){
 	SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
 }
 
-void tSprite::draw(int x, int y){
+void tSprite::draw(int x, int y, float angle, SDL_RendererFlip flip){
 	dst.x = x;
 	dst.y = y;
-	SDL_RenderCopy(ren, tex, NULL, &dst);
+	SDL_RenderCopyEx(ren, tex, NULL, &dst, angle, NULL, flip);
 }
 
 tObject *tSprite::object(float x, float y, float speed){

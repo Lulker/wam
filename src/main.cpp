@@ -21,7 +21,7 @@ void init(eK & ge){
 		if(e.button.type == SDL_MOUSEBUTTONDOWN)
 			switch(e.button.button){
 				case SDL_BUTTON_LEFT:
-					mc->move(map->xraycast(e.button.x),map->yraycast(e.button.y));
+					mc->move(map->xraycast(e.button.x),map->yraycast(e.button.y))->aim();
 					break;
 			}
 	};

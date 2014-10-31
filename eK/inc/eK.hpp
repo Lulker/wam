@@ -22,6 +22,7 @@ class tObject {
 		float Ay;
 		float Axy;
 		float ms;
+		float rot;
 		std::chrono::steady_clock::time_point move_timestamp;
 	protected:
 		tObject(tSprite *sprite, float x, float y, float speed);
@@ -35,12 +36,14 @@ class tObject {
 		* @param x horizontal position in map
 		* @param y vertical position in map
 		**/
-		void move(int x, int y);
+		tObject *move(int x, int y);
 		/**
 		* Draws object in a map, using that map last camera render
 		* @param map a pointer to the map
 		**/
-		void draw(tTMX *map);
+		tObject *draw(tTMX *map);
+		///Aims in the direction the object is going to move
+		tObject *aim();
 		///Updates the object state/position
 		tObject *update();
 };
@@ -57,8 +60,9 @@ class tSprite {
 		* Draws sprite in a position of the screen
 		* @param x horizontal position in screen
 		* @param y vertical position in screen
+		* @param angle optional angle to rotate sprite
 		**/
-		void draw(int x = 0, int y = 0);
+		void draw(int x = 0, int y = 0, float angle = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
 		/**
 		* Creates an object
 		* @param x horizontal position in map
