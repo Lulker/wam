@@ -23,6 +23,7 @@ class tObject {
 		float Axy;
 		float ms;
 		std::chrono::steady_clock::time_point move_timestamp;
+	protected:
 		tObject(tSprite *sprite, float x, float y, float speed);
 	public:
 		///Current X position
@@ -50,6 +51,7 @@ class tSprite {
 		SDL_Texture *tex;
 		SDL_Rect dst;
 		SDL_Renderer *ren;
+	protected:
 		tSprite(const char *file, SDL_Renderer *renderer);
 	public:
 		/**
@@ -72,9 +74,10 @@ class tTMX {
 	private:
 		std::vector<tSprite*> tileset;
 		std::vector<int*> layers;
-		tTMX(const char *file, eK &ek, const int &offset);
 		float xo;
 		float yo;
+	protected:
+		tTMX(const char *file, eK &ek, const int &offset);
 	public:
 		///Map tile width
 		int tilewidth;
