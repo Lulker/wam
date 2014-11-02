@@ -19,6 +19,7 @@ ifeq ($(OS),Windows_NT)
 	LIBS += -mwindows
 	SEP = \\
 	SDL2 = -L../SDL2/$(PROCESSOR_ARCHITECTURE)
+	CMD = $(COPY) SDL2$(SEP)$(PROCESSOR_ARCHITECTURE)$(SEP). bin$(SEP)
 else
 	SEP = /
 	EXT = .elf
@@ -46,7 +47,7 @@ debug:
 	$(DEL) eDBG$(SEP)bin
 	mkdir eDBG$(SEP)bin
 	$(MAKE) -C eDBG
-	$(COPY) EDBG$(SEP)bin$(SEP). bin$(SEP)
+	$(COPY) eDBG$(SEP)bin$(SEP). bin$(SEP)
 	make all
 
 legacy:
@@ -67,7 +68,7 @@ all:
 	mkdir eK$(SEP)bin
 	$(MAKE) -C eK
 	$(COPY) eK$(SEP)bin$(SEP). bin$(SEP)
-	$(COPY) SDL2$(SEP)$(PROCESSOR_ARCHITECTURE)$(SEP). bin$(SEP)
+	$(CMD)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/*.cpp -o bin/$(NAME)$(EXT) $(LIBS)
 	$(COPY) res$(SEP). bin$(SEP)$(NAME)
 	$(COPY) LICENSES$(SEP). bin
