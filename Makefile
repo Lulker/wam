@@ -58,7 +58,7 @@ release:
 	make all
 
 all:
-	mkdir bin\\WAM
+	mkdir bin$(SEP)WAM
 	$(DEL) CMWC$(SEP)bin
 	mkdir CMWC$(SEP)bin
 	$(MAKE) -C CMWC
