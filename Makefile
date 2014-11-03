@@ -16,7 +16,6 @@ EXT = $(if $(WINDOWS),.exe,.elf)
 debug:
 	@$(MAKE) all
 all:
-	$(OS)
 	@-mkdir bin
 	@-mkdir bin$(SEP)$(NAME)
 	$(COPY) res$(SEP). bin$(SEP)$(NAME)
