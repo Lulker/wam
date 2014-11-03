@@ -1,6 +1,10 @@
 #include <eK.hpp>
 #include <SDL_image.h>
 
+tSprite::~tSprite(){
+	SDL_DestroyTexture(tex);
+}
+
 tSprite::tSprite(const char *file, SDL_Renderer *renderer){
 	ren = renderer;
 	SDL_Surface *img = assert(IMG_Load(file));

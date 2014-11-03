@@ -59,8 +59,18 @@ float tTMX::ytracecast(const float &y){
   return (y-yo)*tileheight;
 }
 
+tTMX::~tTMX(){
+  for(auto& tile : tileset)
+    delete tile;
+  tileset.clear();
+  for(auto& layer : layers)
+    delete[] layer;
+  layers.clear();
+};
+
 tTMX::tTMX(const char *file, eK &ek, const int &offset){
   char * c = freadall(file);
+  char * d = c;
   do{
     while(*++c!='t');
   } while (*++c!='i' || *++c!='l' || *++c!='e' || *++c!='w' || *++c!='i' || *++c!='d' || *++c!='t' || *++c!='h' || *++c!='=' || *++c!='"');
@@ -93,8 +103,10 @@ tTMX::tTMX(const char *file, eK &ek, const int &offset){
   for(;;){
     do{
       while(*++c!='c'){
-        if(!*c)
+        if(!*c){
+          delete[] d;
           return;
+        }
       }
     } while (*++c!='s' || *++c!='v' || *++c!='"' || *++c!='>');
     int * layer = new int[size];

@@ -4,33 +4,51 @@
 #include <vector>
 #include <chrono>
 #include <SDL.h>
-#include <assert.h>
 #include <eDBG.h>
 
 class eK;
 class tTMX;
+class tScene;
 class tSprite;
 class tObject;
+
+class tScene {
+	public:
+		eK *ek;
+		/**
+		* Hash map that contains functions for the different events
+		* every event is identified by an int (corresponds to SDL event)
+		* and contains a void function that gets event as parameter
+		**/
+		std::unordered_map<int,std::function<void(SDL_Event&)>> on;
+		///Function executed when scene starts
+		virtual void init()=0;
+		///Function executed every frame while scene lasts
+		virtual void loop(){};
+		///Function executed when scene ends
+		virtual void quit(){delete this;};
+		virtual ~tScene(){};
+};
 
 class tObject {
 	friend class tSprite;
 	private:
-		tSprite *s;
+		tSprite *sprite;
 		float x0;
 		float y0;
 		float Ax;
 		float Ay;
 		float Axy;
-		float ms;
 		float rot;
+		float speed;
 		std::chrono::steady_clock::time_point move_timestamp;
 	protected:
-		tObject(tSprite *sprite, float x, float y, float speed);
+		tObject(tSprite *sprite, float x, float y, float speed):sprite(sprite), x0(x), y0(y), Ax(0), Ay(0), Axy(0), rot(0), speed(speed), x(x), y(y){};
 	public:
 		///Current X position
-		float cx;
+		float x;
 		///Current Y position
-		float cy;
+		float y;
 		/**
 		* Starts moving object to target position
 		* @param x horizontal position in map
@@ -56,6 +74,7 @@ class tSprite {
 		SDL_Renderer *ren;
 		tSprite(const char *file, SDL_Renderer *renderer);
 	public:
+		~tSprite();
 		/**
 		* Draws sprite in a position of the screen
 		* @param x horizontal position in screen
@@ -81,6 +100,7 @@ class tTMX {
 		float yo;
 		tTMX(const char *file, eK &ek, const int &offset);
 	public:
+		~tTMX();
 		///Map tile width
 		int tilewidth;
 		///Map tile height
@@ -127,44 +147,37 @@ class tTMX {
 
 class eK {
 	private:
-		SDL_Window *win = 0;
 		SDL_Renderer *ren = 0;
-		const char *name;
-	public:
-		///Contiene el tamaño vertical de la pantalla
-		int height;
-		///Contiene el tamaño horizontal de la pantalla
-		int width;
-		/**
-		* Hash map que contiene los diferentes eventos, preparado para tiempo de acceso O(1)
-		* cada evento es identificado por un int (correspondiente al evento SDL) y contiene
-		* una función void que recibe como parámetros el motor y el evento.
-		**/
-		std::unordered_map<int,std::function<void(eK&,SDL_Event&)>> on;
-		/**
-		* Inicializa motor (librerías sdl)
-		* @param title El título de la ventana
-		**/
-		eK(const char *title);
+		SDL_Window *win = 0;
+		int ret = 0;
 		~eK();
+	public:
+		///Scene that will run
+		tScene *scene;
 		/**
-		* Inicializa los valores por defecto del motor y ejecuta una función definida por el usuario "init"
-		* @param init función que recibe como parámetro el motor
-		* @return el motor en si
+		* Creates a window and inits engine
+		* @param title window title
+		* @param ep initial scene
 		**/
-		eK &init(void(*init)(eK&));
+		eK(const char *title, tScene *ep);
+		///Contains screen height
+		int height;
+		///Contains screen width
+		int width;
+		///Scene manager
+		int main();
 		/**
-		* Starts game loop
-		* @param draw function that is iterated forever
-		**/
-		int loop(void(*draw)(eK&));
+		* Exists the game
+		* @param code exit code
+		*/
+		void exit(const int &code);
 		/**
 		* Sets background color
 		* @param r red
 		* @param g green
 		* @param b blue
 		**/
-		void bg(const int &&r, const int &&g, const int &&b);
+		void bg(const int &r, const int &g, const int &b);
 		/**
 		* Loads sprite from a file
 		* @param file name of the sprite file to load
