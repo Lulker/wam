@@ -1,7 +1,7 @@
 export CXXFLAGS += -fpic -shared
 
 each/%:
-	if ! $(MAKE) -C $* MODULE=$* ; then $(CXX) $(CXXFLAGS) -I$*/inc $*/src/*.cpp -o $(ROOT)$*$(DLL); fi
-	$(COPY) $*$(SEP)LICENSES $(ROOT)
+	-$(MAKE) -C $* MODULE=$* || $(CXX) $(CXXFLAGS) -I$*/inc $*/src/*.cpp -o $(ROOT)$*$(DLL)
+	$(COPY) $*$(SEP)LICENSES $(subst /,\\,$(ROOT))
 all:
-	make $(foreach llib, $(filter %/, $(wildcard lib*/)), each/$(patsubst %/,%,$(llib)))
+	$(MAKE) $(foreach llib, $(filter %/, $(wildcard lib*/)), each/$(patsubst %/,%,$(llib)))
