@@ -2,4 +2,4 @@ CXXFLAGS += $(if $(filter-out $(OS),WINDOWS_NT),-LSDL2/$(PROCESSOR_ARCHITECTURE)
 
 all:
 	$(CXX) $(CXXFLAGS) src/*.cpp -o $(ROOT)$(MODULE)$(DLL)
-	$(if $(filter-out $(OS),WINDOWS_NT),$(COPY) SDL2/$(PROCESSOR_ARCHITECTURE)/* $(subst /,\\,$(ROOT)),)
+	$(if $(filter-out $(OS),WINDOWS_NT),$(COPY) SDL2\\$(PROCESSOR_ARCHITECTURE)\\. $(subst /,\\,$(ROOT)),)
