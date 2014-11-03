@@ -1,8 +1,6 @@
-#include <eK.hpp>
+#include <scene/sStart.hpp>
 #include <string>
 #include <unistd.h>
-
-eK *game_engine;
 
 #ifdef __WIN32
 #include <windows.h>
@@ -16,7 +14,5 @@ int main(int argc, char const *argv[]){
 #endif
 	*(&name[0] + name.find_last_of(".")) = 0;
 	chdir(&name[0]);
-	game_engine = new eK(program);
-	eKmain();
-	return game_engine->main();
+	return (new eK(program,new sStart))->main();
 }

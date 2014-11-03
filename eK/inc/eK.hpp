@@ -4,7 +4,6 @@
 #include <vector>
 #include <chrono>
 #include <SDL.h>
-#include <assert.h>
 #include <eDBG.h>
 
 class eK;
@@ -13,14 +12,9 @@ class tScene;
 class tSprite;
 class tObject;
 
-extern "C" void eKmain();
-
-///Global variable containing game engine
-extern eK *game_engine;
-
 class tScene {
 	public:
-		eK *&ek = game_engine;
+		eK *ek;
 		/**
 		* Hash map that contains functions for the different events
 		* every event is identified by an int (corresponds to SDL event)
@@ -30,30 +24,31 @@ class tScene {
 		///Function executed when scene starts
 		virtual void init()=0;
 		///Function executed every frame while scene lasts
-		virtual void loop()=0;
+		virtual void loop(){};
 		///Function executed when scene ends
-		virtual void quit()=0;
+		virtual void quit(){delete this;};
+		virtual ~tScene(){};
 };
 
 class tObject {
 	friend class tSprite;
 	private:
-		tSprite *s;
+		tSprite *sprite;
 		float x0;
 		float y0;
 		float Ax;
 		float Ay;
 		float Axy;
-		float ms;
-		float rot = 0;
+		float rot;
+		float speed;
 		std::chrono::steady_clock::time_point move_timestamp;
 	protected:
-		tObject(tSprite *sprite, float x, float y, float speed);
+		tObject(tSprite *sprite, float x, float y, float speed):sprite(sprite), x0(x), y0(y), Ax(0), Ay(0), Axy(0), rot(0), speed(speed), x(x), y(y){};
 	public:
 		///Current X position
-		float cx;
+		float x;
 		///Current Y position
-		float cy;
+		float y;
 		/**
 		* Starts moving object to target position
 		* @param x horizontal position in map
@@ -152,24 +147,25 @@ class tTMX {
 
 class eK {
 	private:
-		#ifdef __WIN32
-		friend int ::WinMain(HINSTANCE, HINSTANCE, LPSTR, int);
-		#else
-		friend int ::main(int argc, char const *argv[]);
-		#endif
-		eK(const char *title);
 		SDL_Renderer *ren = 0;
 		SDL_Window *win = 0;
 		int ret = 0;
-		int main();
 		~eK();
 	public:
+		///Scene that will run
+		tScene *scene;
+		/**
+		* Creates a window and inits engine
+		* @param title window title
+		* @param ep initial scene
+		**/
+		eK(const char *title, tScene *ep);
 		///Contains screen height
 		int height;
 		///Contains screen width
 		int width;
-		///Scene that will run
-		tScene *scene;
+		///Scene manager
+		int main();
 		/**
 		* Exists the game
 		* @param code exit code

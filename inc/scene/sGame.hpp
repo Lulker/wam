@@ -1,3 +1,4 @@
+#pragma once
 #include <eK.hpp>
 
 class sGame : public tScene
@@ -10,7 +11,7 @@ class sGame : public tScene
 		delete map;
 	};
 	void loop(){
-		map->camera(0, 1, mc->cx,mc->cy,(long)(ek->width/(2*64))+1,(long)(ek->height/(2*64))+1);
+		map->camera(0, 1, mc->x,mc->y,(long)(ek->width/(2*64))+2,(long)(ek->height/(2*64))+2);
 		mc->update()->draw(map);
 	};
 	void init(){
@@ -33,7 +34,3 @@ class sGame : public tScene
 		};
 	};
 };
-
-void eKmain(){
-	game_engine->scene = new sGame;
-}
