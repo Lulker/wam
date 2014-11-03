@@ -8,7 +8,7 @@ CMWC = -lCMWC -I./CMWC/inc
 eK = -leK -I./eK/inc -I./SDL2/inc
 eDBG += -I./eDBG/inc -I../eDBG/inc
 LIBS = -L./bin $(CMWC) $(eK) $(eDBG)
-CXXFLAGS += -Ofast -Wall -std=c++1y -I./inc
+CXXFLAGS += -Ofast -Wall -fno-exceptions -std=c++1y -I./inc
 LDFLAGS = -Wl,-rpath,'$$ORIGIN'
 
 ifeq ($(OS),Windows_NT)
@@ -19,6 +19,7 @@ ifeq ($(OS),Windows_NT)
 	LIBS += -mwindows
 	SEP = \\
 	SDL2 = -L../SDL2/$(PROCESSOR_ARCHITECTURE)
+	CMD = $(COPY) SDL2$(SEP)$(PROCESSOR_ARCHITECTURE)$(SEP). bin$(SEP)
 else
 	SEP = /
 	EXT = .elf
@@ -46,7 +47,7 @@ debug:
 	$(DEL) eDBG$(SEP)bin
 	mkdir eDBG$(SEP)bin
 	$(MAKE) -C eDBG
-	$(COPY) EDBG$(SEP)bin$(SEP). bin$(SEP)
+	$(COPY) eDBG$(SEP)bin$(SEP). bin$(SEP)
 	make all
 
 legacy:
@@ -58,7 +59,7 @@ release:
 	make all
 
 all:
-	mkdir bin\\WAM
+	mkdir bin$(SEP)WAM
 	$(DEL) CMWC$(SEP)bin
 	mkdir CMWC$(SEP)bin
 	$(MAKE) -C CMWC
@@ -67,7 +68,7 @@ all:
 	mkdir eK$(SEP)bin
 	$(MAKE) -C eK
 	$(COPY) eK$(SEP)bin$(SEP). bin$(SEP)
-	$(COPY) SDL2$(SEP)$(PROCESSOR_ARCHITECTURE)$(SEP). bin$(SEP)
+	$(CMD)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/*.cpp -o bin/$(NAME)$(EXT) $(LIBS)
 	$(COPY) res$(SEP). bin$(SEP)$(NAME)
 	$(COPY) LICENSES$(SEP). bin
