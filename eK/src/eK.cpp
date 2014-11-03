@@ -1,8 +1,7 @@
 #include <eK.hpp>
 #include <SDL_ttf.h>
 
-eK::eK(const char *title){
-	eDBG_INIT
+eK::eK(const char *title, tScene *ep): scene(ep){
 	assert(!SDL_Init(SDL_INIT_EVERYTHING));
 	assert(TTF_Init()!=-1);
 	win = assert(SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 0, 0, SDL_WINDOW_SHOWN|SDL_WINDOW_BORDERLESS|SDL_WINDOW_MAXIMIZED));
@@ -34,18 +33,20 @@ tTMX *eK::tmx(const char *file, const int &offset){
 
 int eK::main(){
 	while(scene){
-		scene->on[SDL_QUIT] = [](SDL_Event & e){game_engine->exit(0);};
+		scene->ek = this;
+		scene->on[SDL_QUIT] = [this](SDL_Event & e){exit(0);};
+		scene->on[SDL_WINDOWEVENT] = [this](SDL_Event & e){SDL_GetWindowSize(win,&width,&height);};
+		tScene *cs = scene;
 		scene->init();
 		SDL_Event e;
-		tScene *cs = scene;
-		do{
+		while(cs==scene){
 			SDL_RenderClear(ren);
 			while(SDL_PollEvent(&e))
 				if(cs->on[e.type])
 					cs->on[e.type](e);
-			SDL_RenderPresent(ren);
 			cs->loop();
-		} while(cs==scene);
+			SDL_RenderPresent(ren);
+		}
 		cs->quit();
 	}
 	return ret;
@@ -54,5 +55,4 @@ int eK::main(){
 void eK::exit(const int &code){
 	scene = 0;
 	ret = code;
-	delete this;
 }

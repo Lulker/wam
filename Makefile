@@ -8,7 +8,7 @@ CMWC = -lCMWC -I./CMWC/inc
 eK = -leK -I./eK/inc -I./SDL2/inc
 eDBG += -I./eDBG/inc -I../eDBG/inc
 LIBS = -L./bin $(CMWC) $(eK) $(eDBG)
-CXXFLAGS += -Ofast -Wall -std=c++1y -I./inc
+CXXFLAGS += -Ofast -Wall -fno-exceptions -std=c++1y -I./inc
 LDFLAGS = -Wl,-rpath,'$$ORIGIN'
 
 ifeq ($(OS),Windows_NT)
