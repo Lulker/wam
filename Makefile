@@ -1,18 +1,22 @@
 NAME = WAM
+ifeq ($(OS),Windows_NT)
+export WINDOWS = 1
+endif
 debug: CXXFLAGS = -DeDBG_ON=1 -DGLIBCXX_FORCE_NEW=1
-debug: LDFLAGS = $(if $(filter-out $(OS),WINDOWS_NT),-mconsole,)
-LDFLAGS += -Wl,-rpath,'$$ORIGIN' $(if $(filter-out $(OS),WINDOWS_NT),-mwindows,)
+debug: LDFLAGS = $(if $(WINDOWS),-mconsole,)
+LDFLAGS += -Wl,-rpath,'$$ORIGIN' $(if $(WINDOWS),-mwindows,)
 export CXX = g++
 export CXXFLAGS = -Ofast -Wall -fno-exceptions -std=c++1y -Iinc/
-export DLL = $(if $(filter-out $(OS),WINDOWS_NT),.dll,.so)
-export COPY = $(if $(filter-out $(OS),WINDOWS_NT),@-xcopy /y /q /s /e,@-cp -a)
-export SEP = $(if $(filter-out $(OS),WINDOWS_NT),\\,/)
+export DLL = $(if $(WINDOWS),.dll,.so)
+export COPY = $(if $(WINDOWS),@-xcopy /y /q /s /e,@-cp -a)
+export SEP = $(if $(WINDOWS),\\,/)
 export ROOT = $(CURDIR)/bin/
-EXT = $(if $(filter-out $(OS),WINDOWS_NT),.exe,.elf)
+EXT = $(if $(WINDOWS),.exe,.elf)
 
 debug:
 	@$(MAKE) all
 all:
+	$(OS)
 	@-mkdir bin
 	@-mkdir bin$(SEP)$(NAME)
 	$(COPY) res$(SEP). bin$(SEP)$(NAME)
