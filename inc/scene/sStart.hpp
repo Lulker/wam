@@ -1,8 +1,11 @@
 #pragma once
-#include <scene/sGame.hpp>
+#include <SGE.hpp>
+//#include <scene/sGame.hpp>
 
-class sStart : public tScene
+using namespace GEK
+
+class sStart : public Scene
 {
 	public:
-	void init(){ek->scene = new sGame;};
+	void init(){};//GEK::scene = new sGame;};
 };
