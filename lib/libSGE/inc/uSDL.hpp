@@ -48,36 +48,35 @@ typedef int32_t eK_JoystickID;
 #define eK_BUTTON_WHEELDOWN	5
 
 typedef struct {
-	int16_t x, y;
-	uint16_t w, h;
+	int x, y;
+	int w, h;
 } eK_Rect;
 
-int SDL_Init(int32_t);
-void SDL_Quit(void);
-int TTF_Init();
-int TTF_WasInit();
-void TTF_Quit();
+extern "C" int SDL_Init(int32_t);
+extern "C" void SDL_Quit(void);
+extern "C" int TTF_Init();
+extern "C" int TTF_WasInit();
+extern "C" void TTF_Quit();
 
-eK_Surface *IMG_Load(const char *);
-void SDL_FreeSurface(eK_Surface*);
+extern "C" eK_Surface *IMG_Load(const char *);
+extern "C" void SDL_FreeSurface(eK_Surface*);
 
-eK_Texture *SDL_CreateTextureFromSurface(eK_Renderer*,eK_Surface*);
-int SDL_QueryTexture(eK_Texture*, void*, void*, uint16_t*, uint16_t*);
-void SDL_DestroyTexture(eK_Texture*);
+extern "C" eK_Texture *SDL_CreateTextureFromSurface(eK_Renderer*,eK_Surface*);
+extern "C" int SDL_QueryTexture(eK_Texture*, void*, void*, int*, int*);
+extern "C" void SDL_DestroyTexture(eK_Texture*);
 
-int SDL_RenderCopyEx(eK_Renderer*, eK_Texture*, const eK_Rect*, const eK_Rect*, const double, void*, const eK_RendererFlip);
+extern "C" int SDL_RenderCopyEx(eK_Renderer*, eK_Texture*, const eK_Rect*, const eK_Rect*, const double, void*, const eK_RendererFlip);
 
-eK_Window* SDL_CreateWindow(const char*, int, int, int, int, uint32_t);
-void SDL_DestroyWindow(eK_Window*);
-eK_Renderer* SDL_CreateRenderer(eK_Window*, int, uint32_t);
-void SDL_DestroyRenderer(eK_Renderer*);
-void SDL_GetWindowSize(eK_Window*, int*, int*);
+extern "C" eK_Window* SDL_CreateWindow(const char*, int, int, int, int, uint32_t);
+extern "C" void SDL_DestroyWindow(eK_Window*);
+extern "C" eK_Renderer* SDL_CreateRenderer(eK_Window*, int, uint32_t);
+extern "C" void SDL_DestroyRenderer(eK_Renderer*);
+extern "C" void SDL_GetWindowSize(eK_Window*, int*, int*);
 
-
-int SDL_RenderClear(eK_Renderer*);
-int SDL_PollEvent(eK_Event*);
-void SDL_RenderPresent(eK_Renderer*);
-int SDL_SetRenderDrawColor(eK_Renderer*,uint8_t,uint8_t,uint8_t,uint8_t);
+extern "C" int SDL_RenderClear(eK_Renderer*);
+extern "C" int SDL_PollEvent(eK_Event*);
+extern "C" void SDL_RenderPresent(eK_Renderer*);
+extern "C" int SDL_SetRenderDrawColor(eK_Renderer*,uint8_t,uint8_t,uint8_t,uint8_t);
 
 typedef struct eK_Keysym {
 	eK_Scancode scancode;
