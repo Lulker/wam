@@ -29,13 +29,14 @@ char *getuntil(char *&str, char t){
 }
 
 SGE::TMX::~TMX(){
+	puts("TMX destructing");
 	for(auto& tile : tileset)
 		delete tile;
 	tileset.clear();
 	for(auto& layer : layers)
 		delete[] layer;
 	layers.clear();
-}
+debug(snafu)}
 
 SGE::TMX::TMX(const char *file, const int &offset){
 	char * c = freadall(file);

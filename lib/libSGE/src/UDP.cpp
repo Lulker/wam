@@ -11,16 +11,16 @@
 SGE::UDP::UDP(unsigned short port) {
 	#ifdef _WIN32
 	WSADATA info;
-	assert(WSAStartup(514, &info));
+	assert(WSAStartup(514, &info),snafu);
 	#endif
-	assert((ld = socket(2,2,0)),==-1);
+	assert((ld = socket(2,2,0))==-1,snafu);
 	long unsigned opt = 1;
 	ioctl(ld, FIONBIO, &opt);
 	address.sin_family = 2;
 	address.sin_port = htons(port);
-	assert(bind(ld, reinterpret_cast<const sockaddr*>(&address), sizeof(sockaddr_in)),==-1);
-}
+	assert(bind(ld, reinterpret_cast<const sockaddr*>(&address), sizeof(sockaddr_in))==-1,snafu);
+debug(snafu)}
 
 SGE::UDP::~UDP(){
 	close(ld);
-}
+debug(snafu)}

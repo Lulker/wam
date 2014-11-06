@@ -12,5 +12,5 @@ class Scene {
 		virtual void loop(const double &deltatime){};
 		///Function executed when scene ends
 		virtual void quit(){delete this;};
-		virtual ~Scene(){};
+		virtual ~Scene(){debug(snafu)};
 };

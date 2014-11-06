@@ -1,13 +1,9 @@
-#include <string>
-#include <unistd.h>
 #include <SGE.hpp>
 
 using namespace SGE;
 
-class sStart : public Scene
-{
-	public:
-	void init(){};//GEK::scene = new sGame;};
-};
+#include <scene/sGame.hpp>
+#include <scene/sStart.hpp>
 
 SGE_Main(new sStart)
+

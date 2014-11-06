@@ -1,8 +1,15 @@
 #include <SGE.hpp>
-#include <cstdlib>
 #include <chrono>
 
-void SGE::GEK::clean(){
+using namespace SGE;
+
+eK_Window *GEK::window;
+eK_Renderer *GEK::renderer;
+Scene *GEK::scene;
+Vector2<int> GEK::screen(0);
+
+void GEK::clean(){
+	debug(snafu);
 	if(scene)
 		scene->quit();
 	if(renderer)
@@ -14,14 +21,14 @@ void SGE::GEK::clean(){
 	SDL_Quit();
 }
 
-int SGE::GEK::main(const char *title, Scene *initial_scene){
-	assert(SDL_Init(eK_INIT_EVERYTHING),!=0);
-	assert(TTF_Init(),!=-1);
-	renderer = window = assert(SDL_CreateWindow(title, eK_WINDOWPOS_CENTERED, eK_WINDOWPOS_CENTERED, 0, 0, eK_WINDOW_SHOWN|eK_WINDOW_BORDERLESS|eK_WINDOW_MAXIMIZED));
-	renderer = assert(SDL_CreateRenderer(window, -1, eK_RENDERER_ACCELERATED | eK_RENDERER_PRESENTVSYNC));
+void GEK::main(const char *title, Scene *initial_scene){
+	assert(!SDL_Init(eK_INIT_EVERYTHING),snafu);
+	assert(!TTF_Init(),snafu);
+	assert(renderer = window = SDL_CreateWindow(title, eK_WINDOWPOS_CENTERED, eK_WINDOWPOS_CENTERED, 0, 0, eK_WINDOW_SHOWN|eK_WINDOW_BORDERLESS|eK_WINDOW_MAXIMIZED),snafu);
+	assert(renderer = SDL_CreateRenderer(window, -1, eK_RENDERER_ACCELERATED | eK_RENDERER_PRESENTVSYNC),snafu);
 	scene = initial_scene;
 	atexit(clean);
-	while(scene){
+	for(;;){
 		Scene *cs = scene;
 		scene->init();
 		eK_Event e;
@@ -34,7 +41,7 @@ int SGE::GEK::main(const char *title, Scene *initial_scene){
 					case eK_WINDOWEVENT:
 						SDL_GetWindowSize(window,&screen.x,&screen.y);break;
 					case eK_QUIT:
-						exit(0);break;
+						std::exit(0);
 					default:if(cs->on[e.type])
 						cs->on[e.type](e);
 				}
@@ -43,6 +50,4 @@ int SGE::GEK::main(const char *title, Scene *initial_scene){
 		}
 		cs->quit();
 	}
-	exit(0);
-	return 0;
 }
