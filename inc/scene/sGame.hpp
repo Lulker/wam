@@ -3,16 +3,14 @@ class sGame : public Scene
 	private:
 		TMX *map;
 		Object *mc;
-		Object *mc2;
 	public:
 	void quit(){
 		delete map;
 		delete mc;
-		delete mc2;
 		delete this;
 	};
 	void loop(const double &deltatime){
-		map->camera({0,1}, mc->position,Vector2<double>(GEK::screen)/=128);
+		map->camera({0,1}, mc->position,GEK::screen()(div,map->tile));
 		mc->update(deltatime);
 		mc->draw(map);
 	};

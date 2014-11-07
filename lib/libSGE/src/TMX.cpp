@@ -1,6 +1,8 @@
 #include <SGE.hpp>
 #include <cstdio>
 
+using namespace SGE;
+
 char *freadall(const char *file){
 	FILE *f = fopen(file, "rb");
 	fseek(f, 0, SEEK_END);
@@ -28,8 +30,7 @@ char *getuntil(char *&str, char t){
 	return start;
 }
 
-SGE::TMX::~TMX(){
-	puts("TMX destructing");
+TMX::~TMX(){
 	for(auto& tile : tileset)
 		delete tile;
 	tileset.clear();
@@ -38,7 +39,7 @@ SGE::TMX::~TMX(){
 	layers.clear();
 debug(snafu)}
 
-SGE::TMX::TMX(const char *file, const int &offset){
+TMX::TMX(const char *file, const int &offset):last_camera({0}),tile(0,0),map(0,0){
 	char * c = freadall(file);
 	char * d = c;
 	do{

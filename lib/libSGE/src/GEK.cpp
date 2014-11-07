@@ -3,10 +3,10 @@
 
 using namespace SGE;
 
-eK_Window *GEK::window;
-eK_Renderer *GEK::renderer;
-Scene *GEK::scene;
-Vector2<int> GEK::screen(0);
+eK_Window *GEK::window = 0;
+eK_Renderer *GEK::renderer = 0;
+Scene *GEK::scene = 0;
+Vector2<> GEK::screen(0);
 
 void GEK::clean(){
 	debug(snafu);
@@ -33,13 +33,16 @@ void GEK::main(const char *title, Scene *initial_scene){
 		scene->init();
 		eK_Event e;
 		auto t = std::chrono::high_resolution_clock::now();
+		int x,y;
 		while(cs==scene){
 			auto tmp = t;
 			SDL_RenderClear(renderer);
 			while(SDL_PollEvent(&e))
 				switch(e.type){
 					case eK_WINDOWEVENT:
-						SDL_GetWindowSize(window,&screen.x,&screen.y);break;
+						SDL_GetWindowSize(window,&x,&y);
+						screen={(double)x,(double)y};
+					break;
 					case eK_QUIT:
 						std::exit(0);
 					default:if(cs->on[e.type])

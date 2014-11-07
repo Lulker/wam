@@ -10,10 +10,11 @@
 #include <vector>
 #include <string>
 #include <cstdio>
-#include <cstdint>
 #include <cstdlib>
+#include <cstdint>
 #include <uSDL.hpp>
 #include <unistd.h>
+#include <algorithm>
 #include <functional>
 #include <unordered_map>
 

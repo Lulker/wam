@@ -6,7 +6,7 @@ class GEK {
 		///Scene that will run
 		static Scene *scene;
 		///Contains screen size
-		static Vector2<int> screen;
+		static Vector2<> screen;
 		///Sets background color
 		static void bg(const int &red, const int &green, const int &blue){SDL_SetRenderDrawColor(renderer, red, green, blue, 255);};
 		///Scene manager

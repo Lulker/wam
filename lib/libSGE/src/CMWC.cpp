@@ -1,13 +1,10 @@
 #include <SGE.hpp>
 #define PHI 0x9e3779b9
 
-SGE::CMWC::CMWC(uint32_t seed){
-	i = 4095;
-	c = 362436;
+SGE::CMWC::CMWC(uint32_t seed):i(4095),c(362436){
 	Q[0] = seed;
 	Q[1] = seed + PHI;
 	Q[2] = seed + (PHI<<1);
-
 	for (int i = 3; i < 4096; i++)
 		Q[i] = Q[i - 3] ^ Q[i - 2] ^ PHI ^ i;
 }

@@ -1,7 +1,7 @@
 class TMX {
 	std::vector<Sprite*> tileset;
 	std::vector<int*> layers;
-	Vector2<> last_camera = {0};
+	Vector2<> last_camera;
 	public:
 		~TMX();
 		/**
@@ -11,35 +11,29 @@ class TMX {
 		**/
 		TMX(const char *file, const int &offset);
 		///Tile size
-		Vector2<int> tile = {0,0};
+		Vector2<int> tile;
 		///Map size
-		Vector2<int> map = {0,0};
+		Vector2<int> map;
 		/**
 		* Renders map in screen
 		* @param layer draw from to layer
 		* @param center of the map (camera position)
 		* @param radius of sight in tiles
 		**/
-		void camera(Vector2<int> layer, Vector2<> center, Vector2<> radius){
-			last_camera = center-radius;
-			Vector2<int> draw = (radius-center)*tile;
-			int x0 = (int)center.x-radius.x;
-			int y0 = (int)center.y-radius.y;
-			int Ax = (x0+((int)radius.x<<1)>map.x)?map.x-x0:(int)radius.x<<1;
-			int Ay = (y0+((int)radius.y<<1)>map.y)?map.y-y0:(int)radius.y<<1;
-			int j0 = (y0<0)?-y0:0;
-			int i0 = (x0<0)?-x0:0;
+		void camera(Vector2<int> layer, Vector2<> center, Vector2<> diameter){
+			last_camera = center()(sub,diameter()(div,{2}));
+			Vector2<int> m0(last_camera()(max,last_camera()(mul,{-1})));
+			Vector2<int> me(last_camera()(add,diameter));
+			//Vector2<int> px0(m0()(sub,Vector2<int>(m0))(mul,tile));
+			//Vector2<int> pxe(px0()(add,diameter()(mul,tile)));
+			//pxe(max,tile()(sub,{1})(add,GEK::screen()));
 			for(int l=layer.x;l<layer.y;++l)
-				for(int j=j0;j<Ay;++j)
-					for(int i=i0;i<Ax;++i);
-						//printf("%f,%f,%f\n",tile.x, draw.x, ((tile*Vector2<int>(i,j))+=draw).x); //tileset[layers[l][(x0+i)+((y0+j)*map.x)]]->draw((tile*Vector2<int>(i,j))+=draw);
+				for(int j=m0.y;j<me.y;++j)
+					for(int i=m0.x;i<me.x;++i)
+						tileset[layers[l][j*map.x+i]]->draw(tracecast({(double)i,(double)j}));
 		};
 		///Gets map position from screen position
-		Vector2<> raycast(Vector2<> screen_position){
-			return (screen_position/tile) += last_camera;
-		}
+		Vector2<> raycast(Vector2<> screen_position){return screen_position()(div,tile)(add,last_camera);}
 		///Gets screen position from map position
-		Vector2<> tracecast(Vector2<> map_position){
-			return (map_position-last_camera) *= tile;
-		};
+		Vector2<> tracecast(Vector2<> map_position){return map_position()(sub,last_camera)(mul,tile);};
 };
