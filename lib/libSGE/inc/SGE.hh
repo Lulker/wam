@@ -12,11 +12,12 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
-#include <uSDL.hpp>
+#include <uSDL.hh>
 #include <unistd.h>
 #include <algorithm>
 #include <functional>
 #include <unordered_map>
+#include <Meta.hh>
 
 #define SGE_Main(scene) IF_WIN(int WinMain(HINSTANCE, HINSTANCE, LPSTR, int),int main(int argc, char const *argv[])){\
 	std::string name(IF_WIN(GetCommandLine(),argv[0]));\
@@ -27,14 +28,13 @@
 }
 
 namespace SGE{
-	#include <Debug.hpp>
-	#include <Vector2.hpp>
-	#include <Scene.hpp>
-	#include <GEK.hpp>
-	#include <Surface.hpp>
-	#include <Sprite.hpp>
-	#include <TMX.hpp>
-	#include <Object.hpp>
-	#include <CMWC.hpp>
-	#include <UDP.hpp>
+	#include <Vector2.hh>
+	#include <Scene.hh>
+	#include <GEK.hh>
+	#include <Surface.hh>
+	#include <Sprite.hh>
+	#include <TMX.hh>
+	#include <Object.hh>
+	#include <CMWC.hh>
+	#include <UDP.hh>
 }

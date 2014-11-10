@@ -1,4 +1,4 @@
-class TMX {
+class TMX : public BCO {
 	std::vector<Sprite*> tileset;
 	std::vector<int*> layers;
 	Vector2<> last_camera;

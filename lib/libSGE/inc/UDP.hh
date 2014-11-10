@@ -1,5 +1,4 @@
-class UDP
-{
+class UDP : public BCO {
 	private:
 		struct sockaddr_in address = {};
 		int ld;
