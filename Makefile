@@ -20,4 +20,4 @@ all:
 	@-mkdir bin$(SEP)$(NAME)
 	$(COPY) res$(SEP). bin$(SEP)$(NAME)
 	$(MAKE) -C lib
-	$(CXX) $(CXXFLAGS) $(SDL2) $(LDFLAGS) src/*.cpp -o bin/$(NAME)$(EXT) -Ilib/libeK/SDL2/inc -Lbin $(foreach llib, $(filter %/, $(wildcard lib/lib*/)), -l$(patsubst lib/lib%/,%,$(llib)) -I$(llib)inc)
+	$(CXX) $(CXXFLAGS) $(SDL2) $(LDFLAGS) src/*.cc -o bin/$(NAME)$(EXT) -Ilib/libeK/SDL2/inc -Lbin $(foreach llib, $(filter %/, $(wildcard lib/lib*/)), -l$(patsubst lib/lib%/,%,$(llib)) -I$(llib)inc)

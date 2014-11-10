@@ -1,12 +1,16 @@
-class Sprite {
+class Sprite : public BCO {
 	eK_Texture *texture;
 	eK_Rect destination;
 	public:
 		///Uses surface as sprite
-		Sprite(const Surface surface):texture(assert(SDL_CreateTextureFromSurface(GEK::renderer, surface.surface),snafu)){
+		Sprite(const Surface surface):texture(debug_assert(SDL_CreateTextureFromSurface(GEK::renderer, surface.surface))){
+			debug_point();
 			SDL_QueryTexture(texture, 0, 0, &destination.w, &destination.h);
-		debug(snafu)}
-		~Sprite(){SDL_DestroyTexture(texture);debug(snafu)}
+		}
+		~Sprite(){
+			SDL_DestroyTexture(texture);
+			debug_point();
+		}
 		/**
 		* Draws sprite in a position of the screen
 		* @param x horizontal position in screen

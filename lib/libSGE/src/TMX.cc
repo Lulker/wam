@@ -1,4 +1,4 @@
-#include <SGE.hpp>
+#include <SGE.hh>
 #include <cstdio>
 
 using namespace SGE;
@@ -37,7 +37,8 @@ TMX::~TMX(){
 	for(auto& layer : layers)
 		delete[] layer;
 	layers.clear();
-debug(snafu)}
+	debug_point();
+}
 
 TMX::TMX(const char *file, const int &offset):last_camera({0}),tile(0,0),map(0,0){
 	char * c = freadall(file);

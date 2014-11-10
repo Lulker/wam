@@ -1,4 +1,4 @@
-#include <SGE.hpp>
+#include <SGE.hh>
 #ifdef _WIN32
 	#define ioctl ioctlsocket
 	#define close closesocket
@@ -10,17 +10,18 @@
 
 SGE::UDP::UDP(unsigned short port) {
 	#ifdef _WIN32
-	WSADATA info;
-	assert(WSAStartup(514, &info),snafu);
+	WSADATA info();
+	debug_assert(WSAStartup(514, &info));
 	#endif
-	assert((ld = socket(2,2,0))==-1,snafu);
+	debug_assert((ld = socket(2,2,0)),==-1);
 	long unsigned opt = 1;
 	ioctl(ld, FIONBIO, &opt);
 	address.sin_family = 2;
 	address.sin_port = htons(port);
-	assert(bind(ld, reinterpret_cast<const sockaddr*>(&address), sizeof(sockaddr_in))==-1,snafu);
-debug(snafu)}
+	debug_assert(bind(ld, reinterpret_cast<const sockaddr*>(&address), sizeof(sockaddr_in)),==-1);
+}
 
 SGE::UDP::~UDP(){
 	close(ld);
-debug(snafu)}
+	debug_point();
+}

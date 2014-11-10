@@ -1,4 +1,4 @@
-class Scene {
+class Scene : public BackCollector {
 	public:
 		/**
 		* Hash map that contains functions for the different events
@@ -12,5 +12,5 @@ class Scene {
 		virtual void loop(const double &deltatime){};
 		///Function executed when scene ends
 		virtual void quit(){delete this;};
-		virtual ~Scene(){debug(snafu)};
+		virtual ~Scene(){debug_point();};
 };
