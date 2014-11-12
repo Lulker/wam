@@ -10,7 +10,7 @@
 
 SGE::UDP::UDP(unsigned short port) {
 	#ifdef _WIN32
-	WSADATA info();
+	WSADATA info;
 	debug_assert(WSAStartup(514, &info));
 	#endif
 	debug_assert((ld = socket(2,2,0)),==-1);

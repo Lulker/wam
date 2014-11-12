@@ -5,7 +5,7 @@ endif
 debug: CXXFLAGS = -DeDBG_ON=1 -DGLIBCXX_FORCE_NEW=1
 debug: LDFLAGS = $(if $(WINDOWS),-mconsole,)
 LDFLAGS += -Wl,-rpath,'$$ORIGIN' $(if $(WINDOWS),-mwindows,)
-export CXX = clang++
+export CXX = g++
 export CXXFLAGS = -Ofast -Wall -fno-exceptions -std=c++1y -Iinc/
 export DLL = $(if $(WINDOWS),.dll,.so)
 export COPY = $(if $(WINDOWS),@-xcopy /y /q /s /e,@-cp -a)

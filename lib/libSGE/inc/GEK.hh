@@ -10,5 +10,5 @@ class GEK {
 		///Sets background color
 		static void bg(const int &red, const int &green, const int &blue){SDL_SetRenderDrawColor(renderer, red, green, blue, 255);};
 		///Scene manager
-		static void main(const char*, Scene*);
+		static int main(const char*, Scene*);
 };
