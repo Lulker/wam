@@ -21,7 +21,7 @@ void GEK::clean(){
 	SDL_Quit();
 }
 
-void GEK::main(const char *title, Scene *initial_scene){
+int GEK::main(const char *title, Scene *initial_scene){
 	debug_assert(SDL_Init(eK_INIT_EVERYTHING),==0);
 	debug_assert(TTF_Init(),==0);
 	debug_assert(renderer = window = SDL_CreateWindow(title, eK_WINDOWPOS_CENTERED, eK_WINDOWPOS_CENTERED, 0, 0, eK_WINDOW_SHOWN|eK_WINDOW_BORDERLESS|eK_WINDOW_MAXIMIZED));

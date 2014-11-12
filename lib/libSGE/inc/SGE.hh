@@ -1,11 +1,12 @@
 #pragma once
 #ifdef _WIN32
-	#include <windows.h>
 	#include <winsock2.h>
+	#include <windows.h>
 #else
 	#include <arpa/inet.h>
 #endif
 
+#define M_PI  3.14159265358979323846264338327950288419716939937510
 #include <cmath>
 #include <vector>
 #include <string>
@@ -24,7 +25,7 @@
 	const char *title = &name[0] + 1 + name.find_last_of(IF_WIN("\\","/"));\
 	*(&name[0] + name.find_last_of(".")) = 0;\
 	chdir(&name[0]);\
-	SGE::GEK::main(title,scene);\
+	return SGE::GEK::main(title,scene);\
 }
 
 namespace SGE{
