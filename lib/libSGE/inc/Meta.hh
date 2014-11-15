@@ -1,40 +1,36 @@
+#include <type_traits>
+#include <cstdlib>
+
 #ifdef __WIN32
 	#define IF_WIN(w,l) w
 #else
 	#define IF_WIN(w,l) l
 #endif
-
+//STDIO,STDLIB,TYPE_TRAITS,
 #ifdef NDEBUG
-	#define debug_var(var)
+	#define debug(action,f,...) f(...)
 #else
 	#include <cxxabi.h>
-	#include <iostream>
-	#define debug_var(var) std::cout << __FILE__ << ":" << __LINE__ << "\t" << __func__ << "\t\t" #var "( "<< abi::__cxa_demangle(typeid(var).name(), 0, 0, 0) << " ) = "<< var << "\n"
+	#include <cstdio>
+	#define debug(action,f,...) ([&](const char* func){printf("|%-20s:%-5d|%-20s|%-20s|%.*s\n",__BASE_FILE__,__LINE__,func,action,atoi(getenv("COLUMNS"))-66,#__VA_ARGS__);return f(__VA_ARGS__);})(__func__)
 #endif
 
-#define assert(f) _pimpl_assert(f,__FILE__,__LINE__,__func__)
-template <class T> T _pimpl_assert(T foo, const char *file, const int line, const char *function){
-	if((foo)) return foo;
-	printf("%s(%s):%d",file,function,line);
-	exit(0);
-}
+#define assert(v) debug("Asserting...",([&](auto _){if((_)) return _; exit(0);}),v)
 
-template<class T> constexpr T &AUTO_DEFER(T* x){return *x;}
-template<class T> constexpr T &AUTO_DEFER(T x){return x;}
+extern std::unordered_map<void*,std::string> debug_db;
+template<class T> T *&debug_store_ptr(T *&&var){debug_db[var] = IF_WIN(typeid(var).name(),abi::__cxa_demangle(typeid(var).name(), 0, 0, 0));return var;}
+
 
 #define cttc(T,E) class = typename std::enable_if<similar_to<T,E>::value>
 template<class T,class E> struct similar_to : std::integral_constant<bool,std::is_convertible<typename std::remove_pointer<typename std::decay<T>::type>::type,E>::value> {};
+
 class BCO {public: virtual ~BCO(){}};
 class BackCollector : public BCO {
 	std::vector<BCO*> lptd;
 	public:
 		BackCollector(size_t reserve = 1024){lptd.reserve(reserve);}
-		//template<class T, cttc(T,BCO)> T *BC(){T* object = new T;lptd.push_back(object);return object;}
-		template<class T, cttc(T,BCO), class... Args> T *BC(Args&&... args){
-			T* object = new T(args...);
-			debug_var(object);
-			lptd.push_back(object);
-			return object;
-		}
-		virtual ~BackCollector(){for(auto object:lptd){debug_var(object);delete object;}}
+		template<class T, cttc(T,BCO)> T *BC(){T* object = debug_store_ptr(new T);lptd.push_back(object);return object;}
+		template<class T, cttc(T,BCO), class... Args> T *BC(Args&&... args){T* object = debug_store_ptr(new T(args...));lptd.push_back(object);return object;}
+		virtual ~BackCollector(){for(auto& object:lptd) debug(&("delete "+debug_db[object])[0],[&](){delete object;});}
 };
+#define BC(T,...) debug(#T,BC<T>,__VA_ARGS__)
