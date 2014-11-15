@@ -2,7 +2,7 @@ NAME = WAM
 ifeq ($(OS),Windows_NT)
 export WINDOWS = 1
 endif
-release: CXXFLAGS = -DNDEBUG=1 -DGLIBCXX_FORCE_NEW=1
+release: CXXFLAGS = -DNDEBUG=1
 LDFLAGS += -Wl,-rpath,'$$ORIGIN' $(if $(WINDOWS),-mwindows,)
 export CXX = clang++
 export CXXFLAGS = -Ofast -Wall -fno-exceptions -std=c++1y -Iinc/

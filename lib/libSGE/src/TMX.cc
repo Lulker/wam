@@ -31,7 +31,6 @@ char *getuntil(char *&str, char t){
 }
 
 TMX::~TMX(){
-	printf("here");
 	for(auto& layer : layers)
 		delete[] layer;
 }
@@ -53,7 +52,7 @@ TMX::TMX(const char *file, const int &offset):last_camera({0}),tile(0,0),map(0,0
 				if(c[0]=='<' && c[1]=='/' && c[2]=='t' && c[3]=='i' && c[4]=='l' && c[5]=='e' && c[6]=='s')
 					goto parse_layers;
 		} while (*++c!='o' || *++c!='u' || *++c!='r' || *++c!='c' || *++c!='e' || *++c!='=' || *++c!='"');
-		tileset.push_back(BC<Sprite>(Surface(getuntil(c,'"')+offset)));
+		tileset.push_back(BC(Sprite,Surface(getuntil(c,'"')+offset)));
 	}
 	parse_layers:
 	do{

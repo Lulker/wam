@@ -12,5 +12,4 @@ class Scene : public BackCollector {
 		virtual void loop(const double &deltatime){};
 		///Function executed when scene ends
 		virtual void quit(){delete this;};
-		virtual ~Scene(){};
 };
