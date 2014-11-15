@@ -1,4 +1,4 @@
-class TMX : public BCO {
+class TMX : public BackCollector {
 	std::vector<Sprite*> tileset;
 	std::vector<int*> layers;
 	Vector2<> last_camera;
