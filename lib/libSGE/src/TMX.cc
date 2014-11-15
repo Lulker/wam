@@ -31,13 +31,9 @@ char *getuntil(char *&str, char t){
 }
 
 TMX::~TMX(){
-	for(auto& tile : tileset)
-		delete tile;
-	tileset.clear();
+	printf("here");
 	for(auto& layer : layers)
 		delete[] layer;
-	layers.clear();
-	debug_point();
 }
 
 TMX::TMX(const char *file, const int &offset):last_camera({0}),tile(0,0),map(0,0){
@@ -55,11 +51,11 @@ TMX::TMX(const char *file, const int &offset):last_camera({0}),tile(0,0),map(0,0
 		do{
 			while(*++c!='s')
 				if(c[0]=='<' && c[1]=='/' && c[2]=='t' && c[3]=='i' && c[4]=='l' && c[5]=='e' && c[6]=='s')
-					goto end;
+					goto parse_layers;
 		} while (*++c!='o' || *++c!='u' || *++c!='r' || *++c!='c' || *++c!='e' || *++c!='=' || *++c!='"');
-		tileset.push_back(new Sprite(Surface(getuntil(c,'"')+offset)));
+		tileset.push_back(BC<Sprite>(Surface(getuntil(c,'"')+offset)));
 	}
-	end:
+	parse_layers:
 	do{
 		while(*++c!='<');
 	} while (*++c!='l' || *++c!='a' || *++c!='y' || *++c!='e' || *++c!='r');
@@ -74,12 +70,9 @@ TMX::TMX(const char *file, const int &offset):last_camera({0}),tile(0,0),map(0,0
 	int size = map.x*map.y;
 	for(;;){
 		do{
-			while(*++c!='c'){
-				if(!*c){
-					delete[] d;
-					return;
-				}
-			}
+			while(*++c!='c')
+				if(!*c)
+					goto end;
 		} while (*++c!='s' || *++c!='v' || *++c!='"' || *++c!='>');
 		int * layer = new int[size];
 		++c;
@@ -89,4 +82,5 @@ TMX::TMX(const char *file, const int &offset):last_camera({0}),tile(0,0),map(0,0
 		}
 		layers.push_back(layer);
 	}
+	end: delete[] d;
 }
