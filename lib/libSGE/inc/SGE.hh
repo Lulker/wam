@@ -8,16 +8,12 @@
 
 #define M_PI  3.14159265358979323846264338327950288419716939937510
 #include <cmath>
-#include <vector>
 #include <string>
-#include <cstdio>
-#include <cstdlib>
 #include <cstdint>
 #include <uSDL.hh>
 #include <unistd.h>
 #include <algorithm>
 #include <functional>
-#include <unordered_map>
 #include <Meta.hh>
 
 #define SGE_Main(scene) IF_WIN(int WinMain(HINSTANCE, HINSTANCE, LPSTR, int),int main(int argc, char const *argv[])){\
