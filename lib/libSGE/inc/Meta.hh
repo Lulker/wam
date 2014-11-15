@@ -1,25 +1,23 @@
-#include <type_traits>
-#include <cstdlib>
-
+#include <unordered_map>
+#include <vector>
 #ifdef __WIN32
 	#define IF_WIN(w,l) w
 #else
 	#define IF_WIN(w,l) l
 #endif
-//STDIO,STDLIB,TYPE_TRAITS,
+
 #ifdef NDEBUG
-	#define debug(action,f,...) f(...)
+	#define debug_store_ptr(...) __VA_ARGS__
+	#define debug(action,f,...) f(__VA_ARGS__)
 #else
 	#include <cxxabi.h>
 	#include <cstdio>
-	#define debug(action,f,...) ([&](const char* func){printf("|%-20s:%-5d|%-20s|%-20s|%.*s\n",__BASE_FILE__,__LINE__,func,action,atoi(getenv("COLUMNS"))-66,#__VA_ARGS__);return f(__VA_ARGS__);})(__func__)
+	extern std::unordered_map<void*,std::string> debug_db;
+	template<class T> T *&debug_store_ptr(T *&&var){debug_db[var] = IF_WIN(typeid(var).name(),abi::__cxa_demangle(typeid(var).name(), 0, 0, 0));return var;}
+	#define debug(des,fun,...) ([&](const char* f){printf("|%-20s:%-5d|%-20s|%-20s|%.*s\n",__BASE_FILE__,__LINE__,f,des,224-71,#__VA_ARGS__);return fun(__VA_ARGS__);})(__func__)
 #endif
 
 #define assert(v) debug("Asserting...",([&](auto _){if((_)) return _; exit(0);}),v)
-
-extern std::unordered_map<void*,std::string> debug_db;
-template<class T> T *&debug_store_ptr(T *&&var){debug_db[var] = IF_WIN(typeid(var).name(),abi::__cxa_demangle(typeid(var).name(), 0, 0, 0));return var;}
-
 
 #define cttc(T,E) class = typename std::enable_if<similar_to<T,E>::value>
 template<class T,class E> struct similar_to : std::integral_constant<bool,std::is_convertible<typename std::remove_pointer<typename std::decay<T>::type>::type,E>::value> {};
