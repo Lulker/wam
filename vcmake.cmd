@@ -1,6 +1,7 @@
 @mkdir bin
 @mkdir bin\WAM
-pushd "C:\Program Files\Microsoft Visual Studio *\VC\bin"
+@if "%PROCESSOR_ARCHITECTURE%" == "AMD64" @pushd "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"
+@if "%PROCESSOR_ARCHITECTURE%" == "x86"   @pushd "C:\Program Files\Microsoft Visual Studio 12.0\VC\bin"
 @set TARGET_ARCHITECTURE="%PROCESSOR_ARCHITECTURE%"
 @if not "%2" == ""   @set TARGET_ARCHITECTURE=%1
 @if not "%1" == ""    @set "DEBUG=/D NDEBUG=1"
