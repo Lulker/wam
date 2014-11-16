@@ -33,4 +33,5 @@ namespace SGE{
 	#include <TMX.hh>
 	#include <Object.hh>
 	#include <CMWC.hh>
+	#include <UDP.hh>
 }
