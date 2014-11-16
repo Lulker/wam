@@ -1,30 +1,15 @@
-template <class T> T add(T a,T b){return a+b;}
-template <class T> T sub(T a,T b){return a-b;}
-template <class T> T mul(T a,T b){return a*b;}
-template <class T> T div(T a,T b){return a/b;}
-template <class T> T max(T a,T b){return (a/b)?a:b;}
-template <class T> T min(T a,T b){return (a>b)?b:a;}
-
-template <class T = double>
-class Vector2 {
-	public:
-		T x;
-		T y;
-		Vector2(T v):x(v),y(v){}
-		Vector2(T x, T y):x(x),y(y){}
-		Vector2 operator()()const{return *this;}
-		T operator()(T(op)(T,T))const{return op(x,y);}
-		Vector2& operator()(void(op)(T&,T&)){op(x,y); return *this;}
-		Vector2& operator()(T(op)(T)){
-			x=op(x);
-			y=op(y);
-			return *this;
-		}
-		template<class OT = double, class V2 = Vector2<OT>>
-		Vector2& operator()(T(op)(T,T), V2 &&o){
-			x=op(x,o.x);
-			y=op(y,o.y);
-			return *this;
-		}
-		template<class NT> operator Vector2<NT>()const{return Vector2<NT>((NT)x,(NT)y);}
+#include <smmintrin.h>
+union Vector2 {
+	__m128d mm;
+	struct{double x, y;};
+	Vector2(__m128d m):mm(m){};
+	Vector2(double xy):mm(_mm_set1_pd(xy)){};
+	Vector2(double x, double y):mm(_mm_set_pd(y,x)){};
+	Vector2 operator+(const Vector2 &o)const{return _mm_add_pd(mm, o.mm);}
+	Vector2 operator-(const Vector2 &o)const{return _mm_sub_pd(mm, o.mm);}
+	Vector2 operator*(const Vector2 &o)const{return _mm_mul_pd(mm, o.mm);}
+	Vector2 operator/(const Vector2 &o)const{return _mm_div_pd(mm, o.mm);}
+	Vector2 unit()const{return _mm_div_pd(mm,_mm_sqrt_pd(_mm_dp_pd(mm, mm, 0xFF)));}
+	Vector2 clamp(const Vector2 &a,const Vector2 &b)const{return _mm_max_pd(_mm_min_pd(b.mm,mm),a.mm);}
+	double mag()const{return _mm_cvtsd_f64(_mm_sqrt_pd(_mm_dp_pd(mm, mm, 0xFF)));}
 };
