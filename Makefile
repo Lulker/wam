@@ -5,7 +5,7 @@ endif
 release: CXXFLAGS = -DNDEBUG=1
 LDFLAGS += -Wl,-rpath,'$$ORIGIN' $(if $(WINDOWS),-mwindows,)
 export CXX = clang++
-export CXXFLAGS += -Ofast -Wall -fno-exceptions -std=c++1y -Iinc/
+export CXXFLAGS += -Ofast -march=native -Wall -fno-exceptions -std=c++1y -Iinc/
 export DLL = $(if $(WINDOWS),.dll,.so)
 export COPY = $(if $(WINDOWS),@-xcopy /y /q /s /e,@-cp -a)
 export SEP = $(if $(WINDOWS),\\,/)

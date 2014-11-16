@@ -5,22 +5,16 @@ class sGame : public Scene
 		Object *mc;
 	public:
 		void loop(const double &deltatime){
-			map->camera({0,1}, mc->position,GEK::screen()(div,map->tile));
-			mc->update(deltatime);
+			switch(GEK::mouse.status){
+				case (Mouse::L): mc->move(map->raycast(GEK::mouse.position))->aim();
+				default:break;
+			}
+			map->camera(0, mc->update(deltatime)->position, GEK::screen/map->tile);
 			mc->draw(map);
 		};
 		void init(){
-			mc = BC(Object,BC(Sprite,Surface("gfx/character.png")),10,10,2);
+			mc = BC(Object,BC(Sprite,Surface("gfx/character.png")),Vector2(10,10),5);
 			map = BC(TMX,"maps/Map1.tmx",4);
-			on[eK_MOUSEBUTTONDOWN] = [&](const eK_Event& e){
-				if(e.button.type == eK_MOUSEBUTTONDOWN)
-					switch(e.button.button){
-						case eK_BUTTON_LEFT:
-							mc->move(map->raycast(Vector2<>(e.button.x,e.button.y)));
-							mc->aim();
-							break;
-					}
-			};
 			on[eK_KEYDOWN] = [&](const eK_Event & e){
 				switch(e.key.keysym.sym){
 					case '\033':
