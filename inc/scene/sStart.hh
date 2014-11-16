@@ -1,7 +1,4 @@
-class sStart : public Scene
-{
+class sStart : public Scene {
 	public:
-		void init(){
-			GEK::scene = new sGame;
-		};
+		void init(){GEK::scene = new sGame;}
 };
