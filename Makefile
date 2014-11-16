@@ -11,12 +11,12 @@ export COPY = $(if $(WINDOWS),@-xcopy /y /q /s /e,@-cp -a)
 export SEP = $(if $(WINDOWS),\\,/)
 export ROOT = $(CURDIR)/bin/
 EXT = $(if $(WINDOWS),.exe,.elf)
-SDL2 = -lSDL2 -lSDL2_ttf -lSDL2_image
+SGE += -ISGE/inc $(if $(WINDOWS),-LSDL2/$(PROCESSOR_ARCHITECTURE) -lws2_32,) -lSDL2 -lSDL2_ttf -lSDL2_image SGE/src/*.cc
 release:
 	@$(MAKE) all
 all:
 	@-mkdir bin
 	@-mkdir bin$(SEP)$(NAME)
 	$(COPY) res$(SEP). bin$(SEP)$(NAME)
-	$(MAKE) -C lib
-	$(CXX) $(CXXFLAGS) $(SDL2) $(LDFLAGS) src/*.cc -o bin/$(NAME)$(EXT) -Ilib/libeK/SDL2/inc -Lbin $(foreach llib, $(filter %/, $(wildcard lib/lib*/)), -l$(patsubst lib/lib%/,%,$(llib)) -I$(llib)inc)
+	$(if $(WINDOWS),$(COPY) SDL2\\$(PROCESSOR_ARCHITECTURE)\\. $(subst /,\\,$(ROOT)),)
+	$(CXX) $(CXXFLAGS) $(SGE) $(LDFLAGS) src/*.cc -o bin/$(NAME)$(EXT) -Lbin $(foreach llib, $(filter %/, $(wildcard lib/lib*/)), -l$(patsubst lib/lib%/,%,$(llib)) -I$(llib)inc)
