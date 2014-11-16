@@ -18,7 +18,7 @@ TODO Description
 #Compile instructions
 
 * make and g++ or clang++ with c++1y support are required
-* If you're using Visual Express 2013 (Visual Studio 12.0) you can compile using the vcmake.cmd script
+* Run vcmake.cmd  to compile with Visual Express 2013 (Visual Studio 12.0)
 * Vector math is requires a computer with at least SSE2 (SSE4.1 if possible)
 
 ```
