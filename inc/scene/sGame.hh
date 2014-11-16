@@ -6,10 +6,13 @@ class sGame : public Scene
 	public:
 		void loop(const double &deltatime){
 			switch(GEK::mouse.status){
-				case (Mouse::L): mc->move(map->raycast(GEK::mouse.position))->aim();
+				case (Mouse::L):
+					mc->move(map->raycast(GEK::mouse.position));
+					mc->aim();
 				default:break;
 			}
-			map->camera(0, mc->update(deltatime)->position, GEK::screen/map->tile);
+			mc->update(deltatime);
+			map->camera(0, mc->position, GEK::screen/map->tile);
 			mc->draw(map);
 		};
 		void init(){

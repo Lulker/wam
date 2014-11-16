@@ -20,7 +20,7 @@ class TMX : public BackCollector {
 		* @param center of the map (camera position)
 		* @param radius of sight in tiles
 		**/
-		void camera(int layer, const Vector2 center, const Vector2 diameter){
+		void camera(int layer, const Vector2 &center, const Vector2 &diameter){
 			last_camera = center - diameter/2;
 			const Vector2 m0 = last_camera.clamp(0,map);
 			const Vector2 me = (last_camera+diameter).clamp(0,map);

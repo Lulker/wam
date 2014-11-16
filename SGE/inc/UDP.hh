@@ -1,6 +1,6 @@
 class UDP : public BCO {
 	private:
-		struct sockaddr_in address = {};
+		struct sockaddr_in address;
 		int ld;
 	public:
 		~UDP();

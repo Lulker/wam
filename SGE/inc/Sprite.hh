@@ -12,7 +12,7 @@ class Sprite : public BCO {
 		* @param angle optional angle to rotate sprite
 		* @param flip optional parameter to flip sprite
 		**/
-		void draw(Vector2 position = {0,0}, const double &angle = 0, eK_RendererFlip flip = 0){
+		void draw(const Vector2 &position = {0,0}, const double &angle = 0, eK_RendererFlip flip = 0){
 			destination.x = position.x;
 			destination.y = position.y;
 			SDL_RenderCopyEx(GEK::renderer, texture, 0, &destination, angle, 0, flip);

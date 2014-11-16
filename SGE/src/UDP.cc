@@ -8,7 +8,7 @@
 	#include <unistd.h>
 #endif
 
-SGE::UDP::UDP(unsigned short port) {
+SGE::UDP::UDP(unsigned short port){
 	#ifdef _WIN32
 	WSADATA info;
 	assert(WSAStartup(514, &info));

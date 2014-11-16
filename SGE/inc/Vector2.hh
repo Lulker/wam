@@ -1,4 +1,7 @@
 #include <smmintrin.h>
+#ifndef __SSE4__
+#define _mm_dp_pd(...) _mm_set1_pd(x*x+y*y)
+#endif
 union Vector2 {
 	__m128d mm;
 	struct{double x, y;};
