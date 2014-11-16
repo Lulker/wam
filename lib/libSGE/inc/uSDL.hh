@@ -29,10 +29,6 @@ typedef void* eK_Window;
 typedef union eK_Event eK_Event;
 typedef int eK_Scancode;
 typedef uint32_t eK_Keycode;
-typedef int64_t eK_GestureID;
-typedef int64_t eK_TouchID;
-typedef int64_t eK_FingerID;
-typedef int32_t eK_JoystickID;
 
 #define eK_INIT_EVERYTHING  0x00000030
 #define eK_WINDOW_MAXIMIZED 0x00000080
@@ -72,7 +68,7 @@ extern "C" void SDL_DestroyWindow(eK_Window*);
 extern "C" eK_Renderer* SDL_CreateRenderer(eK_Window*, int, uint32_t);
 extern "C" void SDL_DestroyRenderer(eK_Renderer*);
 extern "C" void SDL_GetWindowSize(eK_Window*, int*, int*);
-
+extern "C" int SDL_GetMouseState(int*,int*);
 extern "C" int SDL_RenderClear(eK_Renderer*);
 extern "C" int SDL_PollEvent(eK_Event*);
 extern "C" void SDL_RenderPresent(eK_Renderer*);
@@ -90,14 +86,7 @@ typedef struct eK_Keysym {
 typedef enum {
 	eK_FIRSTEVENT = 0,
 	eK_QUIT = 0x100,
-	eK_APP_TERMINATING,
-	eK_APP_LOWMEMORY,
-	eK_APP_WILLENTERBACKGROUND,
-	eK_APP_DIDENTERBACKGROUND,
-	eK_APP_WILLENTERFOREGROUND,
-	eK_APP_DIDENTERFOREGROUND,
 	eK_WINDOWEVENT = 0x200,
-	eK_SYSWMEVENT,
 	eK_KEYDOWN = 0x300,
 	eK_KEYUP,
 	eK_TEXTEDITING,
@@ -106,48 +95,8 @@ typedef enum {
 	eK_MOUSEBUTTONDOWN,
 	eK_MOUSEBUTTONUP,
 	eK_MOUSEWHEEL,
-	eK_JOYAXISMOTION = 0x600,
-	eK_JOYBALLMOTION,
-	eK_JOYHATMOTION,
-	eK_JOYBUTTONDOWN,
-	eK_JOYBUTTONUP,
-	eK_JOYDEVICEADDED,
-	eK_JOYDEVICEREMOVED,
-	eK_CONTROLLERAXISMOTION = 0x650,
-	eK_CONTROLLERBUTTONDOWN,
-	eK_CONTROLLERBUTTONUP,
-	eK_CONTROLLERDEVICEADDED,
-	eK_CONTROLLERDEVICEREMOVED,
-	eK_CONTROLLERDEVICEREMAPPED,
-	eK_FINGERDOWN = 0x700,
-	eK_FINGERUP,
-	eK_FINGERMOTION,
-	eK_DOLLARGESTURE = 0x800,
-	eK_DOLLARRECORD,
-	eK_MULTIGESTURE,
-	eK_CLIPBOARDUPDATE = 0x900,
-	eK_DROPFILE = 0x1000,
-	eK_RENDER_TARGETS_RESET = 0x2000,
-	eK_USEREVENT = 0x8000,
 	eK_LASTEVENT = 0xFFFF
 } eK_EventType;
-
-typedef struct eK_CommonEvent {
-	uint32_t type;
-	uint32_t timestamp;
-} eK_CommonEvent;
-
-typedef struct eK_WindowEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	uint32_t windowID;
-	uint8_t event;
-	uint8_t padding1;
-	uint8_t padding2;
-	uint8_t padding3;
-	int32_t data1;
-	int32_t data2;
-} eK_WindowEvent;
 
 typedef struct eK_KeyboardEvent {
 	uint32_t type;
@@ -212,182 +161,18 @@ typedef struct eK_MouseWheelEvent {
 	int32_t y;
 } eK_MouseWheelEvent;
 
-typedef struct eK_JoyAxisEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_JoystickID which;
-	uint8_t axis;
-	uint8_t padding1;
-	uint8_t padding2;
-	uint8_t padding3;
-	int16_t value;
-	uint16_t padding4;
-} eK_JoyAxisEvent;
-
-typedef struct eK_JoyBallEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_JoystickID which;
-	uint8_t ball;
-	uint8_t padding1;
-	uint8_t padding2;
-	uint8_t padding3;
-	int16_t xrel;
-	int16_t yrel;
-} eK_JoyBallEvent;
-
-typedef struct eK_JoyHatEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_JoystickID which;
-	uint8_t hat;
-	uint8_t value;
-	uint8_t padding1;
-	uint8_t padding2;
-} eK_JoyHatEvent;
-
-typedef struct eK_JoyButtonEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_JoystickID which;
-	uint8_t button;
-	uint8_t state;
-	uint8_t padding1;
-	uint8_t padding2;
-} eK_JoyButtonEvent;
-
-typedef struct eK_JoyDeviceEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	int32_t which;
-} eK_JoyDeviceEvent;
-
-typedef struct eK_ControllerAxisEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_JoystickID which;
-	uint8_t axis;
-	uint8_t padding1;
-	uint8_t padding2;
-	uint8_t padding3;
-	int16_t value;
-	uint16_t padding4;
-} eK_ControllerAxisEvent;
-
-typedef struct eK_ControllerButtonEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_JoystickID which;
-	uint8_t button;
-	uint8_t state;
-	uint8_t padding1;
-	uint8_t padding2;
-} eK_ControllerButtonEvent;
-
-typedef struct eK_ControllerDeviceEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	int32_t which;
-} eK_ControllerDeviceEvent;
-
-typedef struct eK_TouchFingerEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_TouchID touchId;
-	eK_FingerID fingerId;
-	float x;
-	float y;
-	float dx;
-	float dy;
-	float pressure;
-} eK_TouchFingerEvent;
-
-typedef struct eK_MultiGestureEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_TouchID touchId;
-	float dTheta;
-	float dDist;
-	float x;
-	float y;
-	uint16_t numFingers;
-	uint16_t padding;
-} eK_MultiGestureEvent;
-
-typedef struct eK_DollarGestureEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_TouchID touchId;
-	eK_GestureID gestureId;
-	uint32_t numFingers;
-	float error;
-	float x;
-	float y;
-} eK_DollarGestureEvent;
-
-typedef struct eK_DropEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	char *file;
-} eK_DropEvent;
-
-typedef struct eK_QuitEvent {
-	uint32_t type;
-	uint32_t timestamp;
-} eK_QuitEvent;
-
-typedef struct eK_OSEvent {
-	uint32_t type;
-	uint32_t timestamp;
-} eK_OSEvent;
-
-typedef struct eK_UserEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	uint32_t windowID;
-	int32_t code;
-	void *data1;
-	void *data2;
-} eK_UserEvent;
-struct eK_SysWMmsg;
-typedef struct eK_SysWMmsg eK_SysWMmsg;
-
-typedef struct eK_SysWMEvent {
-	uint32_t type;
-	uint32_t timestamp;
-	eK_SysWMmsg *msg;
-} eK_SysWMEvent;
-
 typedef union eK_Event {
 	uint32_t type;
-	eK_CommonEvent common;
-	eK_WindowEvent window;
 	eK_KeyboardEvent key;
 	eK_TextEditingEvent edit;
 	eK_TextInputEvent text;
 	eK_MouseMotionEvent motion;
 	eK_MouseButtonEvent button;
 	eK_MouseWheelEvent wheel;
-	eK_JoyAxisEvent jaxis;
-	eK_JoyBallEvent jball;
-	eK_JoyHatEvent jhat;
-	eK_JoyButtonEvent jbutton;
-	eK_JoyDeviceEvent jdevice;
-	eK_ControllerAxisEvent caxis;
-	eK_ControllerButtonEvent cbutton;
-	eK_ControllerDeviceEvent cdevice;
-	eK_QuitEvent quit;
-	eK_UserEvent user;
-	eK_SysWMEvent syswm;
-	eK_TouchFingerEvent tfinger;
-	eK_MultiGestureEvent mgesture;
-	eK_DollarGestureEvent dgesture;
-	eK_DropEvent drop;
 	uint8_t padding[56];
 } eK_Event;
 
-typedef enum
-{
+typedef enum {
 	KMOD_NONE = 0x0000,
 	KMOD_LSHIFT = 0x0001,
 	KMOD_RSHIFT = 0x0002,

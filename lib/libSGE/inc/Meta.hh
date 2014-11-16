@@ -19,6 +19,8 @@
 
 #define assert(v) debug("Asserting...",([&](auto _){if((_)) return _; exit(0);}),v)
 
+#define chain(...) auto __VA_ARGS__; return this;}
+
 #define cttc(T,E) class = typename std::enable_if<similar_to<T,E>::value>
 template<class T,class E> struct similar_to : std::integral_constant<bool,std::is_convertible<typename std::remove_pointer<typename std::decay<T>::type>::type,E>::value> {};
 

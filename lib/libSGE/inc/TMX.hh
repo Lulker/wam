@@ -1,7 +1,7 @@
 class TMX : public BackCollector {
 	std::vector<Sprite*> tileset;
 	std::vector<int*> layers;
-	Vector2<> last_camera;
+	Vector2 last_camera;
 	public:
 		~TMX();
 		/**
@@ -11,29 +11,25 @@ class TMX : public BackCollector {
 		**/
 		TMX(const char *file, const int &offset);
 		///Tile size
-		Vector2<int> tile;
+		Vector2 tile;
 		///Map size
-		Vector2<int> map;
+		Vector2 map;
 		/**
 		* Renders map in screen
 		* @param layer draw from to layer
 		* @param center of the map (camera position)
 		* @param radius of sight in tiles
 		**/
-		void camera(Vector2<int> layer, Vector2<> center, Vector2<> diameter){
-			last_camera = center()(sub,diameter()(div,{2}));
-			Vector2<int> m0(last_camera()(max,last_camera()(mul,{-1})));
-			Vector2<int> me(last_camera()(add,diameter));
-			//Vector2<int> px0(m0()(sub,Vector2<int>(m0))(mul,tile));
-			//Vector2<int> pxe(px0()(add,diameter()(mul,tile)));
-			//pxe(max,tile()(sub,{1})(add,GEK::screen()));
-			for(int l=layer.x;l<layer.y;++l)
-				for(int j=m0.y;j<me.y;++j)
-					for(int i=m0.x;i<me.x;++i)
-						tileset[layers[l][j*map.x+i]]->draw(tracecast({(double)i,(double)j}));
+		void camera(int layer, const Vector2 center, const Vector2 diameter){
+			last_camera = center - diameter/2;
+			const Vector2 m0 = last_camera.clamp(0,map);
+			const Vector2 me = (last_camera+diameter).clamp(0,map);
+			for(int j=m0.y;j<=me.y;++j)
+				for(int i=m0.x;i<=me.x;++i)
+					tileset[layers[layer][i+j*(int)map.x]]->draw(tracecast(Vector2(i,j)));
 		};
 		///Gets map position from screen position
-		Vector2<> raycast(Vector2<> screen_position){return screen_position()(div,tile)(add,last_camera);}
+		Vector2 raycast(const Vector2 &screen_position)const{return (screen_position/tile)+last_camera;}
 		///Gets screen position from map position
-		Vector2<> tracecast(Vector2<> map_position){return map_position()(sub,last_camera)(mul,tile);};
+		Vector2 tracecast(const Vector2 &map_position)const{return (map_position-last_camera)*tile;};
 };

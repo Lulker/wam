@@ -1,10 +1,12 @@
 class Object : public BCO {
 	Sprite *sprite;
-	Vector2<> target;
-	Vector2<> direction;
+	Vector2 target;
+	Vector2 direction;
 	double rotation;
 	double speed;
 	public:
+		//Current position
+		Vector2 position;
 		/**
 		* Creates an object
 		* @param sprite sprite to create object from
@@ -12,22 +14,13 @@ class Object : public BCO {
 		* @param speed optional parameter to set object move speed in tiles per second
 		* @param rotation optional parameter that sets initial rotation
 		**/
-		Object(Sprite *sprite, Vector2<> position, double speed = 0, double rotation = 0 ):sprite(sprite),target(position),direction(0,0),rotation(rotation),speed(speed),position(position){}
-		//Current position
-		Vector2<> position;
+		Object(Sprite *sprite, Vector2 position, double speed = 0, double rotation = 0 ):sprite(sprite),target(position-0.5),direction(0,0),rotation(rotation),speed(speed),position(position){}
 		///Starts moving object to target map position
-		Object &move(Vector2<> new_target){direction = (direction = (target=new_target)()(sub,position))(div,{sqrt(direction()(mul,direction)(add))});return *this;}
+		chain(move(Vector2 new_target){direction = ((target = new_target-0.5)-position).unit())
 		///Draws object in screen, using a map last camera render
-		template<class T,cttc(T,TMX)> Object &draw(T &&map){sprite->draw(map->tracecast(position),rotation);return *this;}
+		template<class T,cttc(T,TMX*)> chain(draw(T &&map)const{sprite->draw(map->tracecast(position),rotation))
 		///Aims in the direction the object is going to move
-		Object &aim(){rotation = direction()(std::swap)(atan2)*180/M_PI;return *this;}
-		/**
-		* Updates object position
-		* @param deltatime time since last update
-		**/
-		Object &update(const double deltatime){
-			if(target()(sub,position)(mul)>0.05)
-				position(add,direction()(mul,{speed*deltatime}));
-			return *this;
-		}
+		chain(aim(){rotation = atan2(direction.y,direction.x)*180/M_PI)
+		///Updates object position based on time since last update
+		chain(update(const double deltatime){if((target-position).mag()>0.25) position = position + direction*Vector2(speed*deltatime))
 };

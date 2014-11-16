@@ -1,3 +1,8 @@
+struct Mouse {
+	enum Button {NONE,L,M,LM,R,LR,RM,ANY} status;
+	Vector2 position;
+};
+
 class GEK {
 	static void clean();
 	public:
@@ -6,7 +11,9 @@ class GEK {
 		///Scene that will run
 		static Scene *scene;
 		///Contains screen size
-		static Vector2<> screen;
+		static Vector2 screen;
+		///Contains mouse position
+		static Mouse mouse;
 		///Sets background color
 		static void bg(const int &red, const int &green, const int &blue){SDL_SetRenderDrawColor(renderer, red, green, blue, 255);};
 		///Scene manager
