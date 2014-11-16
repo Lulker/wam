@@ -12,6 +12,7 @@ TODO Description
 * Methods and Attributes are lowercase, using underscore separation whenever needed
 * K&R Style indentation where braces are omitted whenever possible
 * Function definition does not end with ;
+* Oneliner functions should be packed
 * Classes use PascalCase
 
 #Compile instructions

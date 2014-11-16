@@ -1,5 +1,4 @@
-class sGame : public Scene
-{
+class sGame : public Scene {
 	private:
 		TMX *map;
 		Object *mc;
