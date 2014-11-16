@@ -8,15 +8,17 @@ TODO Description
 
 #Coding Standard
 
-* Class implementation is separated by files, class headers amalgamated if constructed only through parent classes
-* Classes start with a lowercase character (for class-type declaration), then PascalCase
+* Class implementation is separated in header(with all methods that could be inlined) and files
 * Methods and Attributes are lowercase, using underscore separation whenever needed
 * K&R Style indentation where braces are omitted whenever possible
-* Function definition does not end with ; unless mandatory
+* Function definition does not end with ;
+* Classes use PascalCase
 
 #Compile instructions
 
 * make and g++ or clang++ with c++1y support are required
+* If you're using Visual Express 2013 (Visual Studio 12.0) you can compile using the vcmake.cmd script
+* Vector math is requires a computer with at least SSE2 (SSE4.1 if possible)
 
 ```
   git clone https://github.com/Lulker/wam.git
