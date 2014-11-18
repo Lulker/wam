@@ -14,7 +14,7 @@ class Object : public BCO {
 		* @param speed optional parameter to set object move speed in tiles per second
 		* @param rotation optional parameter that sets initial rotation
 		**/
-		Object(Sprite *sprite, const Vector2 &position, double speed = 0, double rotation = 0 ):sprite(sprite),target(position-0.5),direction(0,0),rotation(rotation),speed(speed),position(position){}
+		Object(Sprite *sprite, const Vector2 &position, double speed = 0, double rotation = 0 ):sprite(sprite),target(position),direction(0,0),rotation(rotation),speed(speed),position(position){}
 		///Starts moving object to target map position
 		void move(const Vector2 &new_target){direction = ((target = new_target-0.5)-position).unit();}
 		///Draws object in screen, using a map last camera render
