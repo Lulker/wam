@@ -19,7 +19,7 @@ TODO Description
 
 * make and g++ or clang++ with c++1y support are required
 * Run vcmake.cmd  to compile with Visual Express 2013 (Visual Studio 12.0)
-* Vector math is requires a computer with at least SSE2 (SSE4.1 if possible)
+* Vector math requires a computer with at least SSE2 (SSE4.1 if possible)
 
 ```
   git clone https://github.com/Lulker/wam.git
