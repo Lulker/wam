@@ -15,18 +15,19 @@ class TMX : public BackCollector {
 		///Map size
 		Vector2 map;
 		/**
-		* Renders map in screen
+		* Renders map in screen in O(n) time, with as few cache misses as possible
 		* @param layer draw from to layer
 		* @param center of the map (camera position)
 		* @param radius of sight in tiles
 		**/
-		void camera(int layer, const Vector2 &center, const Vector2 &diameter){
+		void camera(const int layer, const Vector2 &center, const Vector2 &diameter){
 			last_camera = center - diameter/2;
-			const Vector2 m0 = last_camera.clamp(0,map);
-			const Vector2 me = (last_camera+diameter).clamp(0,map);
+			const Vector2 m0 = last_camera.clamp(0,map-1);
+			const Vector2 me = (last_camera+diameter).clamp(0,map-1);
 			for(int j=m0.y;j<=me.y;++j)
 				for(int i=m0.x;i<=me.x;++i)
-					tileset[layers[layer][i+j*(int)map.x]]->draw(tracecast(Vector2(i,j)));
+					if(layers[layer][i+j*(int)map.x]>=0)
+						tileset[layers[layer][i+j*(int)map.x]]->draw(tracecast(Vector2(i,j)));
 		};
 		///Gets map position from screen position
 		Vector2 raycast(const Vector2 &screen_position)const{return (screen_position/tile)+last_camera;}
