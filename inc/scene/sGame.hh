@@ -13,6 +13,7 @@ class sGame : public Scene {
 			mc->update(deltatime);
 			map->camera(0, mc->position, GEK::screen/map->tile);
 			mc->draw(map);
+			map->camera(1, mc->position, GEK::screen/map->tile);
 		};
 		void init(){
 			mc = BC(Object,BC(Sprite,Surface("gfx/character.png")),Vector2(10,10),5);
