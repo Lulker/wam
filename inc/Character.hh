@@ -11,6 +11,9 @@ public:
   ~Character(){}
   void damage(int hp){live-=hp;}
   void respawn(){move(spawn_point());}
-  void shoot(){}
+  void shoot(Vector2 pos){
+    double distancia = (pos-position).mag();
+
+  }
   void immobilize(){}
 };
