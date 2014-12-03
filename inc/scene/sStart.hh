@@ -1,18 +1,19 @@
 class sStart : public Scene {
-	Object *bg;
-	TMX *map;
+	Sprite *bg;
+	Sprite *start;
 	public:
 		void init(){
-			bg = BC(Object,BC(Sprite,Surface("menu/Background.jpg")),Vector2(0,0),2);
-			map = BC(TMX,"maps/Map1.tmx",4);
+			bg = BC(Sprite,Surface("menu/Background.jpg"));
+			start = BC(Sprite,Surface("menu/Start.png"));
 		}
 		void loop(const double &deltatime){
 			switch(GEK::mouse.status){
 				case (Mouse::L):
-					GEK::scene = new sGame;
+					if(GEK::mouse.position.clamp(GEK::screen/2,(GEK::screen/2)+256) == GEK::mouse.position)
+						GEK::scene = new sGame;
 				default:break;
 			}
-			bg->update(deltatime);
-			bg->draw(map);
+			bg->draw({0, 0});
+			start->draw(GEK::screen/2);
 		};
 };
