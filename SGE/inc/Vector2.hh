@@ -12,6 +12,7 @@ union Vector2 {
 	Vector2 operator-(const Vector2 &o)const{return _mm_sub_pd(mm, o.mm);}
 	Vector2 operator*(const Vector2 &o)const{return _mm_mul_pd(mm, o.mm);}
 	Vector2 operator/(const Vector2 &o)const{return _mm_div_pd(mm, o.mm);}
+	bool operator==(const Vector2 &o)const{return x == o.x && y == o.y;}
 	Vector2 unit()const{return _mm_div_pd(mm,_mm_sqrt_pd(_mm_dp_pd(mm, mm, 0xFF)));}
 	Vector2 clamp(const Vector2 &a,const Vector2 &b)const{return _mm_max_pd(_mm_min_pd(b.mm,mm),a.mm);}
 	double mag()const{return _mm_cvtsd_f64(_mm_sqrt_pd(_mm_dp_pd(mm, mm, 0xFF)));}
