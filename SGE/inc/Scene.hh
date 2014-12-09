@@ -7,7 +7,7 @@ class Scene : public BackCollector {
 		**/
 		std::unordered_map<int,std::function<void(const eK_Event&)>> on;
 		///Function executed when scene starts
-		virtual void init()=0;
+		virtual void init(){};
 		///Function executed every frame while scene lasts
 		virtual void loop(const double &deltatime){};
 		///Function executed when scene ends
