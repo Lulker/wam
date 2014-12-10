@@ -1,11 +1,5 @@
 class sMenu : public Scene {
-	enum elements {
-		background,
-		start,
-		exit,
-		start_hover,
-		exit_hover
-	};
+	enum elements {background,start,exit,start_hover,exit_hover};
 	UI *menu[5];
 	public:
 		void init(){
