@@ -1,10 +1,8 @@
-
-
 struct UI : public BCO {
 	eK_Rect destination;
 	eK_Texture *texture;
 	~UI(){SDL_DestroyTexture(texture);}
-	UI(const Surface &surface, eK_Rect parent = {0,0,GEK::screen.x, GEK::screen.y}, Vector2 EXT_ANCHOR = {0,0}, Vector2 INT_ANCHOR = {0,0}, Vector2 REL_SIZE = {1,1}){
+	UI(const Surface &surface, eK_Rect parent = {0,0,(int)GEK::screen.x,(int)GEK::screen.y}, Vector2 EXT_ANCHOR = {0,0}, Vector2 INT_ANCHOR = {0,0}, Vector2 REL_SIZE = {1,1}){
 		destination.x = parent.x + (EXT_ANCHOR.x <= 1 && EXT_ANCHOR.x >= -1)?parent.w*EXT_ANCHOR.x:EXT_ANCHOR.x;
 		destination.y = parent.y + (EXT_ANCHOR.y <= 1 && EXT_ANCHOR.y >= -1)?parent.h*EXT_ANCHOR.y:EXT_ANCHOR.y;
 		texture = assert(SDL_CreateTextureFromSurface(GEK::renderer, surface.surface));
