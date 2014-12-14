@@ -11,12 +11,14 @@ class sGame : public Scene {
 				default:break;
 			}
 			mc->update(deltatime);
+			if((*map)(1,mc->position.x,mc->position.y)!=-1)
+				mc->update(-deltatime);
 			map->camera(0, mc->position, GEK::screen/map->tile);
 			mc->draw(map);
 			map->camera(1, mc->position, GEK::screen/map->tile);
 		};
 		void init(){
-			mc = BC(Object,BC(Sprite,Surface("gfx/character.png")),Vector2(10,10),5);
+			mc = BC(Object,BC(Sprite,Surface("gfx/character.png")),Vector2(10,12),5);
 			map = BC(TMX,"maps/Map1.tmx",4);
 			on[eK_KEYDOWN] = [&](const eK_Event & e){
 				switch(e.key.keysym.sym){
