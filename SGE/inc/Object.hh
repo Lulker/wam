@@ -1,10 +1,10 @@
 class Object : public BCO {
 	Sprite *sprite;
-	Vector2 target;
-	Vector2 direction;
-	double rotation;
-	double speed;
 	public:
+		Vector2 target;
+		Vector2 direction;
+		double rotation;
+		double speed;
 		//Current position
 		Vector2 position;
 		/**
@@ -19,6 +19,12 @@ class Object : public BCO {
 		void move(const Vector2 &new_target){direction = ((target = new_target-0.5)-position).unit();}
 		///Draws object in screen, using a map last camera render
 		template<class T,cttc(T,TMX*)> void draw(T &&map)const{sprite->draw(map->tracecast(position),rotation);}
+		///Aims in the direction of a vector2
+		void aim(const Vector2 &aimto){
+			target = position;
+			direction = ((aimto-0.5)-position).unit();
+			aim();
+		}
 		///Aims in the direction the object is going to move
 		void aim(){rotation = atan2(direction.y,direction.x)*180/M_PI;}
 		///Updates object position based on time since last update
