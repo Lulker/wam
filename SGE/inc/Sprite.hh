@@ -17,4 +17,6 @@ class Sprite : public BCO {
 			destination.y = position.y;
 			SDL_RenderCopyEx(GEK::renderer, texture, 0, &destination, angle, 0, flip);
 		}
+		///Sets Draw Alpha
+		void setAlpha(const char c){SDL_SetTextureAlphaMod(texture,c);}
 };

@@ -72,7 +72,9 @@ extern "C" int SDL_GetMouseState(int*,int*);
 extern "C" int SDL_RenderClear(eK_Renderer*);
 extern "C" int SDL_PollEvent(eK_Event*);
 extern "C" void SDL_RenderPresent(eK_Renderer*);
+extern "C" int SDL_SetTextureAlphaMod(eK_Texture*,uint8_t);
 extern "C" int SDL_SetRenderDrawColor(eK_Renderer*,uint8_t,uint8_t,uint8_t,uint8_t);
+
 
 typedef struct eK_Keysym {
 	eK_Scancode scancode;
