@@ -43,10 +43,9 @@ typedef uint32_t eK_Keycode;
 #define eK_BUTTON_WHEELUP	4
 #define eK_BUTTON_WHEELDOWN	5
 
-typedef struct {
-	int x, y;
-	int w, h;
-} eK_Rect;
+struct eK_Rect {
+	int x, y, w, h;
+};
 
 extern "C" int SDL_Init(int32_t);
 extern "C" void SDL_Quit(void);

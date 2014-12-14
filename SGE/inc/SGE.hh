@@ -24,6 +24,7 @@ namespace SGE{
 	#include <GEK.hh>
 	#include <Surface.hh>
 	#include <Sprite.hh>
+	#include <UI.hh>
 	#include <TMX.hh>
 	#include <Object.hh>
 	#include <CMWC.hh>
