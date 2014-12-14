@@ -73,6 +73,7 @@ extern "C" int SDL_RenderClear(eK_Renderer*);
 extern "C" int SDL_PollEvent(eK_Event*);
 extern "C" void SDL_RenderPresent(eK_Renderer*);
 extern "C" int SDL_SetTextureAlphaMod(eK_Texture*,uint8_t);
+extern "C" int SDL_RenderDrawLine(eK_Renderer*,int,int,int,int);
 extern "C" int SDL_SetRenderDrawColor(eK_Renderer*,uint8_t,uint8_t,uint8_t,uint8_t);
 
 
