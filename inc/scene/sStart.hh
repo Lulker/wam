@@ -1,4 +1,4 @@
 class sStart : public Scene {
 	public:
-		void init(){GEK::scene = new sGame;}
+		void loop(const double &deltatime){GEK::scene = new sMenu;}
 };

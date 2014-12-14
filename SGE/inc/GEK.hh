@@ -3,6 +3,8 @@ struct Mouse {
 	Vector2 position;
 };
 
+#define aspectratio GEK::screen.x/GEK::screen.y
+
 class GEK {
 	static void clean();
 	public:
