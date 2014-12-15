@@ -32,10 +32,10 @@ class TMX : public BackCollector {
 		mapw = (int)map.x;
 		fovx(draw,x,y,-1,radius-1);
 		fovy(draw,x,y,-1,radius-1);
-		fovxy(draw,x,y,-1,-1,radius-1);
 		fovx(draw,x,y,1,radius-1);
-		fovxy(draw,x,y,1,-1,radius-1);
 		fovy(draw,x,y,1,radius-1);
+		fovxy(draw,x,y,-1,-1,radius-1);
+		fovxy(draw,x,y,1,-1,radius-1);
 		fovxy(draw,x,y,1,1,radius-1);
 		fovxy(draw,x,y,-1,1,radius-1);
 	}
