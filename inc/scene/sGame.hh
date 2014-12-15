@@ -5,11 +5,11 @@ class sGame : public Scene {
 	public:
 		void loop(const double &deltatime){
 			mc->update(deltatime);
-			if((*map)(1,mc->position.x,mc->position.y)!=-1)
+			if((*map)(1,mc->position.x,mc->position.y)!=-1 || (*map)(1,mc->position.x+1,mc->position.y+1)!=-1)
 				mc->update(-deltatime);
 			map->camera(0, mc->position, GEK::screen/map->tile);
-			mc->draw(map);
 			map->camera(1, mc->position, GEK::screen/map->tile);
+			mc->draw(map);
 			switch(GEK::mouse.status){
 				case (Mouse::L):
 					mc->move(map->raycast(GEK::mouse.position));
