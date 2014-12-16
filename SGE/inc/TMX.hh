@@ -70,7 +70,7 @@ class TMX : public BackCollector {
 						tileset[layers[layer][i+j*(int)map.x]]->draw(tracecast(Vector2(i,j)));
 			for(auto sprite:tileset)
 				sprite->setAlpha(1*255);
-			fov(layer,center.x,center.y,10);
+			fov(layer,center.x,center.y,9);
 		};
 		///Gets map position from screen position
 		Vector2 raycast(const Vector2 &screen_position)const{return (screen_position/tile)+last_camera;}
