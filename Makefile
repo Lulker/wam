@@ -16,6 +16,6 @@ all:
 	@-mkdir bin$(SEP)$(NAME)
 	$(COPY) res$(SEP). bin$(SEP)$(NAME)
 	$(if $(WINDOWS),$(COPY) SDL2\\$(PROCESSOR_ARCHITECTURE)\\*.dll $(subst /,\\,$(ROOT)),)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/*.cc -o bin/$(NAME)$(if $(WINDOWS),.exe,.elf) -Lbin $(SGE) $(foreach llib, $(filter %/, $(wildcard lib/lib*/)), -l$(patsubst lib/lib%/,%,$(llib)) -I$(llib)inc)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/*.cc -o bin/$(NAME)$(if $(WINDOWS),.exe,.elf) -Lbin $(SGE) -lpthread $(foreach llib, $(filter %/, $(wildcard lib/lib*/)), -l$(patsubst lib/lib%/,%,$(llib)) -I$(llib)inc)
 release:
 	@$(MAKE) all

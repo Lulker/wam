@@ -8,6 +8,7 @@ class sGame : public Scene {
 		int id;
 		Sprite *green;
 		Sprite *red;
+		Surface *hp_fill;
 		UDP socket;
 		sockaddr_in server;
 		std::unordered_map<int,Player> players;
@@ -16,8 +17,9 @@ class sGame : public Scene {
 		void init(){
 			green = BC(Sprite,Surface("gfx/green.png"));
 			red = BC(Sprite,Surface("gfx/red.png"));
+			hp_fill = BC(Surface,"gfx/hp_fill.png");
 			map = BC(TMX,"maps/Map1.tmx",4);
-			server =  Address("127.0.0.1",7331);
+			server =  Address(GEK::server,7331);
 			Player mc;
 			socket.write(static_cast<Private*>(&mc),sizeof(Private),&server);
 			while(socket.read(static_cast<Private*>(&mc),sizeof(Private))!=sizeof(Private));
@@ -45,8 +47,10 @@ class sGame : public Scene {
 			while(socket.read(static_cast<Status*>(&tmp),sizeof(Private))==sizeof(Private))
 				static_cast<Status&>(players[tmp.id]) = tmp;
 			map->camera(0, players[id].position, GEK::screen/map->tile);
-			for(auto& kv:players)
+			for(auto& kv:players){
 				kv.second.draw((kv.second.team=='G')?green:red,map);
+				UI(*hp_fill,UI::root(),map->tracecast(kv.second.position+Vector2(-0.5,-0.5)),{0,0.5},{static_cast<double>(kv.second.hp)/1000,12}).draw();
+			}
 			map->camera(1, players[id].position, GEK::screen/map->tile);
 			UI(GEK::text(&write[0]),UI::root(),{0,0.6},{0},{1337,1337}).draw();
 			switch(GEK::mouse.status){

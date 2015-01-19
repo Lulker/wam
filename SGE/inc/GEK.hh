@@ -13,6 +13,7 @@ struct Mouse {
 
 struct GEK {
 	static void clean();
+	static const char *server;
 	static eK_Window *window;
 	static eK_Renderer *renderer;
 	///Scene that will run
