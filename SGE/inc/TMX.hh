@@ -1,3 +1,5 @@
+#pragma once
+#include "Sprite.hh"
 class TMX : public BackCollector {
 	std::vector<Sprite*> tileset;
 	std::vector<int*> layers;

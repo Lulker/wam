@@ -1,7 +1,5 @@
-#include <SGE.hh>
+#include "TMX.hh"
 #include <cstdio>
-
-using namespace SGE;
 
 char *freadall(const char *file){
 	FILE *f = fopen(file, "rb");

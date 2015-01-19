@@ -1,3 +1,7 @@
+#pragma once
+#include "Meta.hh"
+#include "uSDL.hh"
+#include <functional>
 class Scene : public BackCollector {
 	public:
 		/**

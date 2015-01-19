@@ -18,7 +18,8 @@
 	 misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
-
+#pragma once
+#include <cstdint>
 union eK_Event;
 typedef int eK_RendererFlip;
 typedef void* eK_Texture;
@@ -26,6 +27,7 @@ typedef void* eK_Surface;
 typedef void* eK_Renderer;
 typedef void* eK_Point;
 typedef void* eK_Window;
+typedef void* eK_TTF;
 typedef union eK_Event eK_Event;
 typedef int eK_Scancode;
 typedef uint32_t eK_Keycode;
@@ -43,15 +45,18 @@ typedef uint32_t eK_Keycode;
 #define eK_BUTTON_WHEELUP	4
 #define eK_BUTTON_WHEELDOWN	5
 
-struct eK_Rect {
-	int x, y, w, h;
-};
+struct eK_Rect {int x, y, w, h;};
+struct eK_Color {uint8_t r,g,b,a;};
 
 extern "C" int SDL_Init(int32_t);
 extern "C" void SDL_Quit(void);
 extern "C" int TTF_Init();
 extern "C" int TTF_WasInit();
 extern "C" void TTF_Quit();
+
+
+extern "C" eK_TTF* TTF_OpenFont(const char*, int);
+extern "C" eK_Surface *TTF_RenderText_Solid(eK_TTF*,const char*,eK_Color);
 
 extern "C" eK_Surface *IMG_Load(const char *);
 extern "C" void SDL_FreeSurface(eK_Surface*);

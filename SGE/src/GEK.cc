@@ -1,11 +1,10 @@
-#include <SGE.hh>
+#include "GEK.hh"
 #include <chrono>
 
-using namespace SGE;
 eK_Window *GEK::window = 0;
 eK_Renderer *GEK::renderer = 0;
 Scene *GEK::scene = 0;
-struct Mouse GEK::mouse = {Mouse::NONE,{0,0}};
+struct Mouse GEK::mouse = {Mouse::NONE,(Mouse::Button)0,{0,0}};
 Vector2 GEK::screen(0);
 
 void GEK::clean(){
@@ -20,11 +19,17 @@ void GEK::clean(){
 	SDL_Quit();
 }
 
+eK_TTF *font;
+Surface GEK::text(const char *str){
+	return Surface(TTF_RenderText_Solid(font,str,{255, 255, 255,255}));
+}
+
 int GEK::main(const char *title, Scene *initial_scene){
 	assert(!SDL_Init(eK_INIT_EVERYTHING));
 	assert(!TTF_Init());
 	assert(renderer = window = SDL_CreateWindow(title, eK_WINDOWPOS_CENTERED, eK_WINDOWPOS_CENTERED, 0, 0, eK_WINDOW_SHOWN|eK_WINDOW_BORDERLESS|eK_WINDOW_MAXIMIZED));
 	assert(renderer = SDL_CreateRenderer(window, -1, eK_RENDERER_ACCELERATED | eK_RENDERER_PRESENTVSYNC));
+	font = TTF_OpenFont("fonts/FiraSans-Light.ttf", 18);
 	scene = initial_scene;
 	atexit(clean);
 	for(;;){
@@ -47,7 +52,9 @@ int GEK::main(const char *title, Scene *initial_scene){
 					default:if(cs->on.count(e.type))
 						cs->on[e.type](e);
 				}
-			mouse = {(Mouse::Button)(SDL_GetMouseState(&x,&y) & Mouse::ANY),Vector2(x,y)};
+			Mouse::Button previous = mouse.status;
+			mouse = {(Mouse::Button)(SDL_GetMouseState(&x,&y) & Mouse::ANY),(Mouse::Button)0,Vector2(x,y)};
+			mouse.updated = Mouse::Button(previous^mouse.status);
 			cs->loop((std::chrono::duration_cast<std::chrono::duration<double>>((t = std::chrono::high_resolution_clock::now())-tmp)).count());
 			SDL_RenderPresent(renderer);
 		}

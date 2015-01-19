@@ -1,3 +1,5 @@
+#include <UI.hh>
+#include <Scene.hh>
 class sMenu : public Scene {
 	enum elements {background,start,exit,start_hover,exit_hover};
 	UI *menu[5];
