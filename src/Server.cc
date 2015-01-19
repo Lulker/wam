@@ -53,26 +53,30 @@ void logic(UDP *sock){
     }
 }
 
-const bool anticheat( const Player& player ){
+const bool anticheat( const Private& player ){
     return (players[player.id].secret == player.secret);
 }
 
 void handler(UDP *sock){
     int size;
-    for(Player player;;) while((size = sock->read(static_cast<Private*>(&player),sizeof(Private),&player.address))>0)
+    sockaddr_in player_address;
+    for(char Buffer[512];;) while((size = sock->read(Buffer,512,&player_address))>0)
         switch(size){
-            case sizeof(Private):
+            case sizeof(Private):{
+                Private player = reinterpret_cast<Private&>(Buffer);
                 if(!player.secret){
                     mutex.lock();
                     char tmp = assign_team();
-                    players.push_back(Player(vrand(),players.size(),tmp,player.address,spawn_position(tmp),spawn_rotation(tmp)));
-                    sock->write(static_cast<Private*>(&players.back()),sizeof(Private),&players.back().address);
+                    players.push_back(Player(vrand(),players.size(),tmp,player_address,spawn_position(tmp),spawn_rotation(tmp)));
+                    sock->write(static_cast<Private*>(&players.back()),sizeof(Private),&player_address);
                     mutex.unlock();
                 }
                 else if (player.id<players.size() && anticheat(player)){
-                        players[player.id].shoot = player.shoot;
-                        players[player.id].target = player.target;
-                    }
+                    players[player.id].shoot = player.shoot;
+                    players[player.id].target = player.target;
+                }
+                break;
+            }
         }
 }
 
