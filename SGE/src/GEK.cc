@@ -3,6 +3,7 @@
 
 eK_Window *GEK::window = 0;
 eK_Renderer *GEK::renderer = 0;
+const char *GEK::server = 0;
 Scene *GEK::scene = 0;
 struct Mouse GEK::mouse = {Mouse::NONE,(Mouse::Button)0,{0,0}};
 Vector2 GEK::screen(0);

@@ -6,7 +6,7 @@ class TMX : public BackCollector {
 	Vector2 last_camera;
 	int mapw;
 	void fovx(const int draw, const int x, const int y, const int Ax, const int radius) {
-		if(!radius) return;
+		if(radius<0) return;
 		if(operator()(draw,x,y)>=0)
 			tileset[operator()(draw,x,y)]->draw(tracecast(Vector2(x,y)));
 		if(operator()(1,x,y)!=-1) return;
@@ -14,32 +14,32 @@ class TMX : public BackCollector {
 	};
 
 	void fovy(const int draw, const int x, const int y, const int Ay, const int radius) {
-		if(!radius) return;
+		if(radius<0) return;
 		if(operator()(draw,x,y)>=0)
 			tileset[operator()(draw,x,y)]->draw(tracecast(Vector2(x,y)));
 		if(operator()(1,x,y)!=-1) return;
 		fovy(draw,x,y+Ay,Ay,radius-1);
 	}
 
-	void fovxy(const int draw, const int x,const int y,const int Ax,const int Ay,const int radius) {
-		if(!radius) return;
+	void fovxy(const int draw, const int x,const int y,const int Ax,const int Ay,const int radiusx, const int radiusy) {
+		if(radiusx<0 && radiusy<0) return;
 		if(operator()(draw,x,y)>=0)
 			tileset[operator()(draw,x,y)]->draw(tracecast(Vector2(x,y)));
 		if(operator()(1,x,y)!=-1) return;
-		fovx(draw,x+Ax,y+Ay,Ax,radius-1);
-		fovy(draw,x+Ax,y+Ay,Ay,radius-1);
-		fovxy(draw,x+Ax,y+Ay,Ax,Ay,radius-1);
+		fovx(draw,x+Ax,y+Ay,Ax,radiusx-1);
+		fovy(draw,x+Ax,y+Ay,Ay,radiusy-1);
+		fovxy(draw,x+Ax,y+Ay,Ax,Ay,radiusx-2,radiusy-2);
 	}
 	void fov(const int draw, const int x, const int y, const int radius) {
 		mapw = (int)map.x;
-		fovx(draw,x,y,-1,radius-1);
 		fovy(draw,x,y,-1,radius-1);
 		fovx(draw,x,y,1,radius-1);
 		fovy(draw,x,y,1,radius-1);
-		fovxy(draw,x,y,-1,-1,radius-1);
-		fovxy(draw,x,y,1,-1,radius-1);
-		fovxy(draw,x,y,1,1,radius-1);
-		fovxy(draw,x,y,-1,1,radius-1);
+		fovx(draw,x,y,-1,radius-1);
+		fovxy(draw,x,y,-1,-1,radius-2,radius-2);
+		fovxy(draw,x,y,1,-1,radius-2,radius-2);
+		fovxy(draw,x,y,1,1,radius-2,radius-2);
+		fovxy(draw,x,y,-1,1,radius-2,radius-2);
 	}
 	public:
 		const int& operator()(const int layer, const int x, const int y){return layers[layer][x+y*mapw];}
