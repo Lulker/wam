@@ -4,7 +4,10 @@
 
 #include <thread>
 void server(const int);
-
+#ifdef _WIN32
+    #include <direct.h>
+    #define chdir _chdir
+#endif
 int main(int argc, char const *argv[]){
     std::string name(argv[0]);
     const char *title = &name[0] + 1 + name.find_last_of(IF_WIN("\\","/"));
