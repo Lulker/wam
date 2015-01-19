@@ -1,12 +1,13 @@
+#pragma once
 #include <smmintrin.h>
-#ifndef __SSE4__
+#ifndef _mm_dp_pd
 #define _mm_dp_pd(...) _mm_set1_pd(x*x+y*y)
 #endif
 union Vector2 {
 	__m128d mm;
 	struct{double x, y;};
 	Vector2(__m128d m):mm(m){};
-	Vector2(double xy):mm(_mm_set1_pd(xy)){};
+	Vector2(double xy = 0):mm(_mm_set1_pd(xy)){};
 	Vector2(double x, double y):mm(_mm_set_pd(y,x)){};
 	Vector2 operator+(const Vector2 &o)const{return _mm_add_pd(mm, o.mm);}
 	Vector2 operator-(const Vector2 &o)const{return _mm_sub_pd(mm, o.mm);}

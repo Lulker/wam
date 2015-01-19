@@ -1,3 +1,8 @@
+#pragma once
+#include "Surface.hh"
+#include "GEK.hh"
+#include "Vector2.hh"
+
 class Sprite : public BCO {
 	eK_Texture *texture;
 	eK_Rect destination;
@@ -7,8 +12,7 @@ class Sprite : public BCO {
 		~Sprite(){SDL_DestroyTexture(texture);}
 		/**
 		* Draws sprite in a position of the screen
-		* @param x horizontal position in screen
-		* @param y vertical position in screen
+		* @param positon position in screen
 		* @param angle optional angle to rotate sprite
 		* @param flip optional parameter to flip sprite
 		**/
