@@ -22,7 +22,7 @@ void GEK::clean(){
 
 eK_TTF *font;
 Surface GEK::text(const char *str){
-	return Surface(TTF_RenderText_Solid(font,str,{255, 255, 255,255}));
+	return Surface(TTF_RenderText_Solid(font,str,{255,255,255,255}));
 }
 
 int GEK::main(const char *title, Scene *initial_scene){
