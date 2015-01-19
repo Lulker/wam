@@ -1,6 +1,9 @@
 #pragma once
 #include <smmintrin.h>
 #include <cmath>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846264338327950288419716939937510
+#endif
 #ifndef _mm_dp_pd
 #define _mm_dp_pd(...) _mm_set1_pd(x*x+y*y)
 #endif
