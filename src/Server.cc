@@ -36,7 +36,6 @@ void logic(UDP *sock){
         return (map(p.x,p.y+copysign(0.5,d.y))==-1) && (map(p.x+copysign(0.5,d.x),p.y)==-1);
     };
     for(;const double deltatime = 3*std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now()-nao).count();){
-        puts("1111111111111111111111111111111111111111");
         nao = std::chrono::high_resolution_clock::now();
         mutex.lock();
         for(auto& update:players){
@@ -72,19 +71,17 @@ const bool anticheat( const Private& player ){
 
 void handler(UDP *sock){
     int size;
-    for(Player player;;) while((size = sock->read(static_cast<Private*>(&player),sizeof(Private),&player.address))==sizeof(Private)){
-      puts("1111111111111111111111111111111111111111");
-      if(!player.secret){
-          mutex.lock();
-          char tmp = assign_team();
-          players.push_back(Player(vrand(),players.size(),tmp,player.address,spawn_position(tmp),spawn_rotation(tmp)));
-          sock->write(static_cast<Private*>(&players.back()),sizeof(Private),&players.back().address);
-          mutex.unlock();
-      } else if (player.id<players.size() && anticheat(player)){
-          players[player.id].shoot = player.shoot;
-          players[player.id].target = player.target;
-      }
-    }
+    for(Player player;;) while((size = sock->read(static_cast<Private*>(&player),sizeof(Private),&player.address))==sizeof(Private))
+        if(!player.secret){
+            mutex.lock();
+            char tmp = assign_team();
+            players.push_back(Player(vrand(),players.size(),tmp,player.address,spawn_position(tmp),spawn_rotation(tmp)));
+            sock->write(static_cast<Private*>(&players.back()),sizeof(Private),&players.back().address);
+            mutex.unlock();
+        } else if (player.id<players.size() && anticheat(player)){
+            players[player.id].shoot = player.shoot;
+            players[player.id].target = player.target;
+        }
 }
 
 void server(const int port){
