@@ -48,8 +48,10 @@ struct sGame : public Scene {
 				players[id].target = map->raycast(GEK->mouse.position);
 				break;
 			case (Mouse::R):
-				if(GEK->mouse.updated & Mouse::R)
+				if(GEK->mouse.updated & Mouse::R){
 					++(players[id].shoot);
+					players[id].target = players[id].position + ((map->raycast(GEK->mouse.position))-(players[id].position+Vector2(0.5))).unit()*0.1;
+				}
 			default:break;
 		}
 		socket.write(static_cast<Private*>(&players[id]),sizeof(Private),&server);
