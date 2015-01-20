@@ -12,7 +12,6 @@ class sGame : public Scene {
 		UDP socket;
 		sockaddr_in server;
 		std::unordered_map<int,Player> players;
-		std::string write = " ";
 	public:
 		void init(){
 			green = BC(Sprite,Surface("gfx/green.png"));
@@ -26,16 +25,12 @@ class sGame : public Scene {
 			id = mc.id;
 			players[id] = mc;
 			on[eK_KEYDOWN] = [&](const eK_Event & e){
-				if((e.key.keysym.sym>='A' && e.key.keysym.sym<='z') || e.key.keysym.sym==' ' )
-					write+=e.key.keysym.sym;
-				else switch(e.key.keysym.sym){
-						case '\033':
-							std::exit(0);
-							break;
-						case '\r':
-							write = " ";
-						default:break;
-					};
+				switch(e.key.keysym.sym){
+					case '\033':
+						std::exit(0);
+						break;
+					default:break;
+				};
 			};
 		}
 		void loop(const double &deltatime){
@@ -44,13 +39,12 @@ class sGame : public Scene {
 			static_cast<Status&>(players[tmp.id]) = tmp;
 			while(socket.read(static_cast<Status*>(&tmp),sizeof(Private))==sizeof(Private))
 				static_cast<Status&>(players[tmp.id]) = tmp;
-			map->camera(0, players[id].position, GEK::screen/map->tile);
+			map->camera(0, players[id].position+Vector2(0.5), GEK::screen/map->tile);
 			for(auto& kv:players){
 				kv.second.draw((kv.second.team=='G')?green:red,map);
-				UI(*hp_fill,UI::root(),map->tracecast(kv.second.position+Vector2(-0.5,-0.5)),{0,0.5},{static_cast<double>(kv.second.hp)/1000,12}).draw();
+				UI(*hp_fill,UI::root(),map->tracecast(kv.second.position-Vector2(0.5)),{0,0.5},{static_cast<double>(kv.second.hp)/(1000),0.02*aspectratio}).draw();
 			}
-			map->camera(1, players[id].position, GEK::screen/map->tile);
-			UI(GEK::text(&write[0]),UI::root(),{0,0.6},{0},{1337,1337}).draw();
+			map->camera(1, players[id].position+Vector2(0.5), GEK::screen/map->tile);
 			switch(GEK::mouse.status){
 				case (Mouse::L):
 					players[id].target = map->raycast(GEK::mouse.position);

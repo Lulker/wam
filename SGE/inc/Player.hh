@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "Sprite.hh"
 #include "TMX.hh"
 #include "UDP.hh"
@@ -33,11 +34,14 @@ struct Player:Private {
 		shoot = 0;
 		shooted = 0;
 	};
-	void update(const Vector2 deltatime){
+	void update(const Vector2 deltatime,const std::function<bool(const Vector2,const Vector2)>& check){
 		direction = (target-position).unit();
 		rotation = direction.angle();
-		if((target-position).mag()>0.25)
-			position = position + direction*deltatime;
+		if((target-position).mag()>0.25){
+			Vector2 new_position = position + direction*deltatime;
+			if(check(new_position+Vector2(0.5),direction))
+				position = new_position;
+		}
 	}
 	void respawn(Vector2 new_position, double new_rotation){position=new_position;rotation=new_rotation;target=position;hp=100;}
 	///Draws object in screen, using a map last camera render
