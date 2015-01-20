@@ -38,6 +38,7 @@ void logic(UDP *sock){
     for(;const double deltatime = 3*std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now()-nao).count();){
         nao = std::chrono::high_resolution_clock::now();
         mutex.lock();
+        puts("1111111111111111");
         for(auto& update:players){/*
             update.update(Vector2(deltatime),collision);
             if(update.shoot != update.shooted){
