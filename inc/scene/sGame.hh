@@ -19,8 +19,7 @@ struct sGame : public Scene {
 		server =  Address(GEK->server,7331);
 		Player mc;
 		socket.write(static_cast<Private*>(&mc),sizeof(Private),&server);
-		while(socket.read(static_cast<Private*>(&mc),sizeof(Private))!=sizeof(Private)) puts("Esperando al puto servidor");;
-		puts("Mensaje Recibido");
+		while(socket.read(static_cast<Private*>(&mc),sizeof(Private))!=sizeof(Private));
 		id = mc.id;
 		players[id] = mc;
 		on[eK_KEYDOWN] = [&](const eK_Event & e){
@@ -34,9 +33,9 @@ struct sGame : public Scene {
 	}
 	Scene* operator()(){
 		Player tmp;
-		while(socket.read(static_cast<Status*>(&tmp),sizeof(Private))!=sizeof(Private));
+		while(socket.read(static_cast<Status*>(&tmp),sizeof(Status))!=sizeof(Status));
 		static_cast<Status&>(players[tmp.id]) = tmp;
-		while(socket.read(static_cast<Status*>(&tmp),sizeof(Private))==sizeof(Private))
+		while(socket.read(static_cast<Status*>(&tmp),sizeof(Status))==sizeof(Status))
 			static_cast<Status&>(players[tmp.id]) = tmp;
 		map->camera(0, players[id].position+Vector2(0.5), GEK->screen/map->tile);
 		map->camera(1, players[id].position+Vector2(0.5), GEK->screen/map->tile);
