@@ -66,7 +66,7 @@ void logic(UDP *sock){
 }
 
 const bool anticheat( const Private& player ){
-    return (players[player.id].secret == player.secret);
+    return (players[player.id].secret == player.secret && players[player.id].ban<nao);
 }
 
 void handler(UDP *sock){
