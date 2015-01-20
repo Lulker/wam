@@ -1,4 +1,4 @@
-#include <scene/sStart.hh>
+#include <scene/sMenu.hh>
 #include <GEK.hh>
 #include <string>
 #ifdef _WIN32
@@ -16,5 +16,5 @@ int main(int argc, char const *argv[]){
     chdir(&name[0]);
     GEK = new GameEngineKernel(&name[0] + 1 + name.find_last_of(IF_WIN("\\","/")),"127.0.0.1");
     if(argc>1) GEK->server = argv[1];
-    return GEK->loop(new sStart);
+    return GEK->loop(new sMenu);
 }
