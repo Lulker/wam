@@ -38,7 +38,7 @@ void logic(UDP *sock){
     for(;const double deltatime = 3*std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now()-nao).count();){
         nao = std::chrono::high_resolution_clock::now();
         mutex.lock();
-        for(auto& update:players){
+        for(auto& update:players){/*
             update.update(Vector2(deltatime),collision);
             if(update.shoot != update.shooted){
                 const Vector2 map_bound = map.raycast(update.position,update.direction);
@@ -60,7 +60,7 @@ void logic(UDP *sock){
                         sock->write(static_cast<Status*>(&player),sizeof(Status),&update.address);
                         break;
                     }
-        }
+        */}
         mutex.unlock();
     }
 }
