@@ -43,7 +43,7 @@ class TMX : public BackCollector {
 	}
 	public:
 		const int& operator()(const int layer, const int x, const int y){return layers[layer][x+y*mapw];}
-		~TMX();
+		~TMX(){for(auto& layer : layers) delete[] layer;}
 		/**
 		* Loads map from a file
 		* @param file name of the map file to load

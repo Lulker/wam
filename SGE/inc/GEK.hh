@@ -22,8 +22,6 @@ struct GEK {
 	static Vector2 screen;
 	///Contains mouse position
 	static Mouse mouse;
-	///Returns a text as a texture
-	static Surface text(const char *str);
 	///Sets background color
 	static void bg(const int &red, const int &green, const int &blue){SDL_SetRenderDrawColor(renderer, red, green, blue, 255);};
 	///Scene manager

@@ -20,17 +20,12 @@ void GEK::clean(){
 	SDL_Quit();
 }
 
-eK_TTF *font;
-Surface GEK::text(const char *str){
-	return Surface(TTF_RenderText_Solid(font,str,{255,255,255,255}));
-}
-
 int GEK::main(const char *title, Scene *initial_scene){
 	assert(!SDL_Init(eK_INIT_EVERYTHING));
 	assert(!TTF_Init());
 	assert(renderer = window = SDL_CreateWindow(title, eK_WINDOWPOS_CENTERED, eK_WINDOWPOS_CENTERED, 0, 0, eK_WINDOW_SHOWN|eK_WINDOW_BORDERLESS|eK_WINDOW_MAXIMIZED));
 	assert(renderer = SDL_CreateRenderer(window, -1, eK_RENDERER_ACCELERATED | eK_RENDERER_PRESENTVSYNC));
-	font = TTF_OpenFont("fonts/FiraSans-Light.ttf", 18);
+	//TODO: font = TTF_OpenFont("fonts/FiraSans-Light.ttf", 18);
 	scene = initial_scene;
 	atexit(clean);
 	for(;;){

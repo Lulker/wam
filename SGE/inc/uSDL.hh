@@ -47,6 +47,25 @@ typedef uint32_t eK_Keycode;
 
 struct eK_Rect {int x, y, w, h;};
 struct eK_Color {uint8_t r,g,b,a;};
+typedef enum {
+	KMOD_NONE = 0x0000,
+	KMOD_LSHIFT = 0x0001,
+	KMOD_RSHIFT = 0x0002,
+	KMOD_SHIFT	= KMOD_LSHIFT|KMOD_RSHIFT,
+	KMOD_LCTRL = 0x0040,
+	KMOD_RCTRL = 0x0080,
+	KMOD_CTRL = KMOD_LCTRL|KMOD_RCTRL,
+	KMOD_LALT = 0x0100,
+	KMOD_RALT = 0x0200,
+	KMOD_ALT = KMOD_LALT|KMOD_RALT,
+	KMOD_LGUI = 0x0400,
+	KMOD_RGUI = 0x0800,
+	KMOD_GUI = KMOD_LGUI|KMOD_RGUI,
+	KMOD_NUM = 0x1000,
+	KMOD_CAPS = 0x2000,
+	KMOD_MODE = 0x4000,
+	KMOD_RESERVED = 0x8000
+} eK_Keymod;
 
 extern "C" int SDL_Init(int32_t);
 extern "C" void SDL_Quit(void);
@@ -54,7 +73,7 @@ extern "C" int TTF_Init();
 extern "C" int TTF_WasInit();
 extern "C" void TTF_Quit();
 
-
+extern "C" eK_Keymod SDL_GetModState(void);
 extern "C" eK_TTF* TTF_OpenFont(const char*, int);
 extern "C" eK_Surface *TTF_RenderText_Solid(eK_TTF*,const char*,eK_Color);
 
@@ -178,24 +197,3 @@ typedef union eK_Event {
 	eK_MouseWheelEvent wheel;
 	uint8_t padding[56];
 } eK_Event;
-
-typedef enum {
-	KMOD_NONE = 0x0000,
-	KMOD_LSHIFT = 0x0001,
-	KMOD_RSHIFT = 0x0002,
-	KMOD_LCTRL = 0x0040,
-	KMOD_RCTRL = 0x0080,
-	KMOD_LALT = 0x0100,
-	KMOD_RALT = 0x0200,
-	KMOD_LGUI = 0x0400,
-	KMOD_RGUI = 0x0800,
-	KMOD_NUM = 0x1000,
-	KMOD_CAPS = 0x2000,
-	KMOD_MODE = 0x4000,
-	KMOD_RESERVED = 0x8000
-} SDL_Keymod;
-
-#define KMOD_CTRL	(KMOD_LCTRL|KMOD_RCTRL)
-#define KMOD_SHIFT	(KMOD_LSHIFT|KMOD_RSHIFT)
-#define KMOD_ALT	(KMOD_LALT|KMOD_RALT)
-#define KMOD_GUI	(KMOD_LGUI|KMOD_RGUI)
