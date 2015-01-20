@@ -73,7 +73,7 @@ const bool anticheat( const Private& player ){
 void handler(UDP *sock){
     int size;
     for(Player player;;) while((size = sock->read(static_cast<Private*>(&player),sizeof(Private),&player.address))==sizeof(Private)){
-      puts("22222222222222222222222222222222");
+      puts("1111111111111111111111111111111111111111");
       if(!player.secret){
           mutex.lock();
           char tmp = assign_team();
