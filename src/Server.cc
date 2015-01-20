@@ -45,8 +45,10 @@ void logic(UDP *sock){
                 const Vector2 llimit = Vector2(0.5)+Vector2(-update.direction.y,update.direction.x);
                 const Vector2 ulimit = Vector2(0.5)-Vector2(-update.direction.y,update.direction.x);
                 for(auto& player:players)
-                    if(&player!=&update && hit(update.position,map_bound,player.position+llimit,player.position+ulimit) && (player.hp -= irand(15,35))<0)
+                    if(&player!=&update && hit(update.position,map_bound,player.position+llimit,player.position+ulimit) && (player.hp -= irand(15,35))<0){
+                        ++update.score;
                         player.respawn(spawn_position(player.team),spawn_rotation(player.team));
+                    }
                 update.shoot = update.shooted;
             }
             std::vector<Vector2> visibles;
