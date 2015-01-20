@@ -41,7 +41,7 @@ struct sGame : public Scene {
 		map->camera(1, players[id].position+Vector2(0.5), GEK->screen/map->tile);
 		for(auto& kv:players){
 			kv.second.draw((kv.second.team=='G')?green:red,map);
-			UI(*hp_fill,UI::root(),map->tracecast(kv.second.position-Vector2(0.5)),{0,0.5},{static_cast<double>(kv.second.hp)/(1000),0.02*aspectratio}).draw();
+			UI(*hp_fill,UI::root(),map->tracecast(kv.second.position+Vector2(0.5,-0.5)),{0.5,0.5},{static_cast<double>(kv.second.hp)/(1000),0.02*aspectratio}).draw();
 		}
 		switch(GEK->mouse.status){
 			case (Mouse::L):
