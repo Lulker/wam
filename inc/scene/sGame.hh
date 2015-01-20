@@ -19,7 +19,8 @@ struct sGame : public Scene {
 		server =  Address(GEK->server,7331);
 		Player mc;
 		socket.write(static_cast<Private*>(&mc),sizeof(Private),&server);
-		while(socket.read(static_cast<Private*>(&mc),sizeof(Private))!=sizeof(Private));
+		while(socket.read(static_cast<Private*>(&mc),sizeof(Private))!=sizeof(Private)) puts("Esperando al puto servidor");;
+		puts("Mensaje Recibido");
 		id = mc.id;
 		players[id] = mc;
 		on[eK_KEYDOWN] = [&](const eK_Event & e){
