@@ -35,11 +35,12 @@ void logic(UDP *sock){
     const std::function<bool(const Vector2,const Vector2)>& collision = [&map](const Vector2 p, const Vector2 d){
         return (map(p.x,p.y+copysign(0.5,d.y))==-1) && (map(p.x+copysign(0.5,d.x),p.y)==-1);
     };
-    for(;const double deltatime = 3*std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now()-nao).count();){
+    for(;;){
+        const double deltatime = 3*std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now()-nao).count();
         nao = std::chrono::high_resolution_clock::now();
         mutex.lock();
         puts("1111111111111111");
-        for(auto& update:players){/*
+        for(auto& update:players){
             update.update(Vector2(deltatime),collision);
             if(update.shoot != update.shooted){
                 const Vector2 map_bound = map.raycast(update.position,update.direction);
@@ -61,8 +62,9 @@ void logic(UDP *sock){
                         sock->write(static_cast<Status*>(&player),sizeof(Status),&update.address);
                         break;
                     }
-        */}
+        }
         mutex.unlock();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
