@@ -10,10 +10,6 @@ class Scene : public BackCollector {
 		* and contains a void function that gets event as parameter
 		**/
 		std::unordered_map<int,std::function<void(const eK_Event&)>> on;
-		///Function executed when scene starts
-		virtual void init(){};
 		///Function executed every frame while scene lasts
-		virtual void loop(const double &deltatime){};
-		///Function executed when scene ends
-		virtual void quit(){delete this;};
+		virtual Scene* operator()()=0;
 };

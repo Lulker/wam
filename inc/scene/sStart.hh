@@ -1,4 +1,2 @@
-class sStart : public Scene {
-	public:
-		void loop(const double &deltatime){GEK::scene = new sMenu;}
-};
+#include "sMenu.hh"
+struct sStart:Scene {Scene* operator()(){return new sMenu;}};

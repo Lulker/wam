@@ -8,7 +8,7 @@ class Sprite : public BCO {
 	eK_Rect destination;
 	public:
 		///Uses surface as sprite
-		Sprite(const Surface &surface):texture(assert(SDL_CreateTextureFromSurface(GEK::renderer, surface.surface))){SDL_QueryTexture(texture, 0, 0, &destination.w, &destination.h);}
+		Sprite(const Surface &surface):texture(assert(SDL_CreateTextureFromSurface(GEK->renderer, surface.surface))){SDL_QueryTexture(texture, 0, 0, &destination.w, &destination.h);}
 		~Sprite(){SDL_DestroyTexture(texture);}
 		/**
 		* Draws sprite in a position of the screen
@@ -19,7 +19,7 @@ class Sprite : public BCO {
 		void draw(const Vector2 &position = {0,0}, const double &angle = 0, eK_RendererFlip flip = 0){
 			destination.x = position.x;
 			destination.y = position.y;
-			SDL_RenderCopyEx(GEK::renderer, texture, 0, &destination, angle, 0, flip);
+			SDL_RenderCopyEx(GEK->renderer, texture, 0, &destination, angle, 0, flip);
 		}
 		///Sets Draw Alpha
 		void setAlpha(const char c){SDL_SetTextureAlphaMod(texture,c);}

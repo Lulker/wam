@@ -67,6 +67,13 @@ typedef enum {
 	KMOD_RESERVED = 0x8000
 } eK_Keymod;
 
+struct eK_DisplayMode {
+ 	uint32_t format;
+	int w,h,refresh_rate;
+	void *driverdata;
+};
+
+extern "C" int SDL_GetCurrentDisplayMode(int,eK_DisplayMode*);
 extern "C" int SDL_Init(int32_t);
 extern "C" void SDL_Quit(void);
 extern "C" int TTF_Init();
