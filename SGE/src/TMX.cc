@@ -1,26 +1,9 @@
-#include <SGE.hh>
+#include "TMX.hh"
 #include <cstdio>
 
-using namespace SGE;
+char *freadall(const char *file);
 
-char *freadall(const char *file){
-	FILE *f = fopen(file, "rb");
-	fseek(f, 0, SEEK_END);
-	long fsize = ftell(f);
-	fseek(f, 0, SEEK_SET);
-	char *string = new char[fsize + 1];
-	fread(string, fsize, 1, f);
-	fclose(f);
-	string[fsize] = 0;
-	return string;
-}
-
-int getint(char *&str){
-	int num = 0;
-	for(;*str>('0'-1) && *str<('9'+1);++str)
-		num = (num*10) + (int)(*str-'0');
-	return num;
-}
+int getint(char *&str);
 
 char *getuntil(char *&str, char t){
 	char * start = &(*str);
@@ -28,11 +11,6 @@ char *getuntil(char *&str, char t){
 	*str = 0;
 	++str;
 	return start;
-}
-
-TMX::~TMX(){
-	for(auto& layer : layers)
-		delete[] layer;
 }
 
 TMX::TMX(const char *file, const int &offset):last_camera({0}),tile(0,0),map(0,0){

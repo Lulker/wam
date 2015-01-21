@@ -1,9 +1,49 @@
+#pragma once
+#include "Sprite.hh"
 class TMX : public BackCollector {
 	std::vector<Sprite*> tileset;
 	std::vector<int*> layers;
 	Vector2 last_camera;
+	int mapw;
+	void fovx(const int draw, const int x, const int y, const int Ax, const int radius) {
+		if(radius<0) return;
+		if(operator()(draw,x,y)>=0)
+			tileset[operator()(draw,x,y)]->draw(tracecast(Vector2(x,y)));
+		if(operator()(1,x,y)!=-1) return;
+		fovx(draw,x+Ax,y,Ax,radius-1);
+	};
+
+	void fovy(const int draw, const int x, const int y, const int Ay, const int radius) {
+		if(radius<0) return;
+		if(operator()(draw,x,y)>=0)
+			tileset[operator()(draw,x,y)]->draw(tracecast(Vector2(x,y)));
+		if(operator()(1,x,y)!=-1) return;
+		fovy(draw,x,y+Ay,Ay,radius-1);
+	}
+
+	void fovxy(const int draw, const int x,const int y,const int Ax,const int Ay,const int radiusx, const int radiusy) {
+		if(radiusx<0 && radiusy<0) return;
+		if(operator()(draw,x,y)>=0)
+			tileset[operator()(draw,x,y)]->draw(tracecast(Vector2(x,y)));
+		if(operator()(1,x,y)!=-1) return;
+		fovx(draw,x+Ax,y+Ay,Ax,radiusx-1);
+		fovy(draw,x+Ax,y+Ay,Ay,radiusy-1);
+		fovxy(draw,x+Ax,y+Ay,Ax,Ay,radiusx-2,radiusy-2);
+	}
+	void fov(const int draw, const int x, const int y, const int radius) {
+		mapw = (int)map.x;
+		fovy(draw,x,y,-1,radius-1);
+		fovx(draw,x,y,1,radius-1);
+		fovy(draw,x,y,1,radius-1);
+		fovx(draw,x,y,-1,radius-1);
+		fovxy(draw,x,y,-1,-1,radius-2,radius-2);
+		fovxy(draw,x,y,1,-1,radius-2,radius-2);
+		fovxy(draw,x,y,1,1,radius-2,radius-2);
+		fovxy(draw,x,y,-1,1,radius-2,radius-2);
+	}
 	public:
-		~TMX();
+		const int& operator()(const int layer, const int x, const int y){return layers[layer][x+y*mapw];}
+		~TMX(){for(auto& layer : layers) delete[] layer;}
 		/**
 		* Loads map from a file
 		* @param file name of the map file to load
@@ -22,12 +62,17 @@ class TMX : public BackCollector {
 		**/
 		void camera(const int layer, const Vector2 &center, const Vector2 &diameter){
 			last_camera = center - diameter/2;
+			for(auto sprite:tileset)
+				sprite->setAlpha(0.5*255);
 			const Vector2 m0 = last_camera.clamp(0,map-1);
 			const Vector2 me = (last_camera+diameter).clamp(0,map-1);
 			for(int j=m0.y;j<=me.y;++j)
 				for(int i=m0.x;i<=me.x;++i)
 					if(layers[layer][i+j*(int)map.x]>=0)
 						tileset[layers[layer][i+j*(int)map.x]]->draw(tracecast(Vector2(i,j)));
+			for(auto sprite:tileset)
+				sprite->setAlpha(1*255);
+			fov(layer,center.x,center.y,9);
 		};
 		///Gets map position from screen position
 		Vector2 raycast(const Vector2 &screen_position)const{return (screen_position/tile)+last_camera;}

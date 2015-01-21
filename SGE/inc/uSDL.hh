@@ -18,7 +18,8 @@
 	 misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
-
+#pragma once
+#include <cstdint>
 union eK_Event;
 typedef int eK_RendererFlip;
 typedef void* eK_Texture;
@@ -26,6 +27,7 @@ typedef void* eK_Surface;
 typedef void* eK_Renderer;
 typedef void* eK_Point;
 typedef void* eK_Window;
+typedef void* eK_TTF;
 typedef union eK_Event eK_Event;
 typedef int eK_Scancode;
 typedef uint32_t eK_Keycode;
@@ -43,16 +45,44 @@ typedef uint32_t eK_Keycode;
 #define eK_BUTTON_WHEELUP	4
 #define eK_BUTTON_WHEELDOWN	5
 
-typedef struct {
-	int x, y;
-	int w, h;
-} eK_Rect;
+struct eK_Rect {int x, y, w, h;};
+struct eK_Color {uint8_t r,g,b,a;};
+typedef enum {
+	KMOD_NONE = 0x0000,
+	KMOD_LSHIFT = 0x0001,
+	KMOD_RSHIFT = 0x0002,
+	KMOD_SHIFT	= KMOD_LSHIFT|KMOD_RSHIFT,
+	KMOD_LCTRL = 0x0040,
+	KMOD_RCTRL = 0x0080,
+	KMOD_CTRL = KMOD_LCTRL|KMOD_RCTRL,
+	KMOD_LALT = 0x0100,
+	KMOD_RALT = 0x0200,
+	KMOD_ALT = KMOD_LALT|KMOD_RALT,
+	KMOD_LGUI = 0x0400,
+	KMOD_RGUI = 0x0800,
+	KMOD_GUI = KMOD_LGUI|KMOD_RGUI,
+	KMOD_NUM = 0x1000,
+	KMOD_CAPS = 0x2000,
+	KMOD_MODE = 0x4000,
+	KMOD_RESERVED = 0x8000
+} eK_Keymod;
 
+struct eK_DisplayMode {
+ 	uint32_t format;
+	int w,h,refresh_rate;
+	void *driverdata;
+};
+
+extern "C" int SDL_GetCurrentDisplayMode(int,eK_DisplayMode*);
 extern "C" int SDL_Init(int32_t);
 extern "C" void SDL_Quit(void);
 extern "C" int TTF_Init();
 extern "C" int TTF_WasInit();
 extern "C" void TTF_Quit();
+
+extern "C" eK_Keymod SDL_GetModState(void);
+extern "C" eK_TTF* TTF_OpenFont(const char*, int);
+extern "C" eK_Surface *TTF_RenderText_Solid(eK_TTF*,const char*,eK_Color);
 
 extern "C" eK_Surface *IMG_Load(const char *);
 extern "C" void SDL_FreeSurface(eK_Surface*);
@@ -72,7 +102,10 @@ extern "C" int SDL_GetMouseState(int*,int*);
 extern "C" int SDL_RenderClear(eK_Renderer*);
 extern "C" int SDL_PollEvent(eK_Event*);
 extern "C" void SDL_RenderPresent(eK_Renderer*);
+extern "C" int SDL_SetTextureAlphaMod(eK_Texture*,uint8_t);
+extern "C" int SDL_RenderDrawLine(eK_Renderer*,int,int,int,int);
 extern "C" int SDL_SetRenderDrawColor(eK_Renderer*,uint8_t,uint8_t,uint8_t,uint8_t);
+
 
 typedef struct eK_Keysym {
 	eK_Scancode scancode;
@@ -171,24 +204,3 @@ typedef union eK_Event {
 	eK_MouseWheelEvent wheel;
 	uint8_t padding[56];
 } eK_Event;
-
-typedef enum {
-	KMOD_NONE = 0x0000,
-	KMOD_LSHIFT = 0x0001,
-	KMOD_RSHIFT = 0x0002,
-	KMOD_LCTRL = 0x0040,
-	KMOD_RCTRL = 0x0080,
-	KMOD_LALT = 0x0100,
-	KMOD_RALT = 0x0200,
-	KMOD_LGUI = 0x0400,
-	KMOD_RGUI = 0x0800,
-	KMOD_NUM = 0x1000,
-	KMOD_CAPS = 0x2000,
-	KMOD_MODE = 0x4000,
-	KMOD_RESERVED = 0x8000
-} SDL_Keymod;
-
-#define KMOD_CTRL	(KMOD_LCTRL|KMOD_RCTRL)
-#define KMOD_SHIFT	(KMOD_LSHIFT|KMOD_RSHIFT)
-#define KMOD_ALT	(KMOD_LALT|KMOD_RALT)
-#define KMOD_GUI	(KMOD_LGUI|KMOD_RGUI)

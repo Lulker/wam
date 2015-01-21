@@ -1,4 +1,6 @@
-class CMWC : public BCO {
+#pragma once
+#include <cstdint>
+class CMWC {
 	uint32_t i;
 	uint32_t c;
 	uint32_t Q[4096];
@@ -10,7 +12,7 @@ class CMWC : public BCO {
 				for (int i = 3; i < 4096; i++)
 					Q[i] = Q[i - 3] ^ Q[i - 2] ^ 0x9e3779b9 ^ i;
 		}
-		uint32_t rand(){
+		uint32_t operator()(){
 			i = (i + 1) & 4095;
 			uint64_t t = 18782LL * Q[i] + c;
 			c = (t >> 32);
@@ -21,4 +23,5 @@ class CMWC : public BCO {
 			}
 			return (Q[i] = 0xfffffffe - x);
 		}
+		uint32_t operator()(int l,int h){return l+((*this)()%(h-l));}
 };

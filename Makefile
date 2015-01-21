@@ -4,7 +4,7 @@ export WINDOWS = 1
 endif
 release: CXXFLAGS = -DNDEBUG=1
 LDFLAGS += -Wl,-rpath,'$$ORIGIN'
-export CXX = g++
+export CXX = clang++
 export CXXFLAGS += -Ofast -march=native -Wall -fno-exceptions -std=c++1y -Iinc/
 export DLL = $(if $(WINDOWS),.dll,.so)
 export COPY = $(if $(WINDOWS),@-xcopy /y /q /s /e,@-cp -a)
@@ -16,6 +16,6 @@ all:
 	@-mkdir bin$(SEP)$(NAME)
 	$(COPY) res$(SEP). bin$(SEP)$(NAME)
 	$(if $(WINDOWS),$(COPY) SDL2\\$(PROCESSOR_ARCHITECTURE)\\*.dll $(subst /,\\,$(ROOT)),)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/*.cc -o bin/$(NAME)$(if $(WINDOWS),.exe,.elf) -Lbin $(SGE) $(foreach llib, $(filter %/, $(wildcard lib/lib*/)), -l$(patsubst lib/lib%/,%,$(llib)) -I$(llib)inc)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/*.cc -o bin/$(NAME)$(if $(WINDOWS),.exe,.elf) -Lbin $(SGE) -lpthread $(foreach llib, $(filter %/, $(wildcard lib/lib*/)), -l$(patsubst lib/lib%/,%,$(llib)) -I$(llib)inc)
 release:
 	@$(MAKE) all

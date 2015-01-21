@@ -1,3 +1,4 @@
+#pragma once
 #include <unordered_map>
 #include <vector>
 #ifdef _WIN32
@@ -22,7 +23,7 @@
 	#define debug(des,fun,...) ([&](const char* f){printf("|%-11.11s:%-5d|%-30.30s|%s\n",[](std::string name){return &name[0] + 1 + name.find_last_of(IF_WIN("\\","/"));}(__FILE__),__LINE__,f,des);return fun(__VA_ARGS__);})(__FUNCTION__)
 #endif
 
-#define assert(v) debug("Asserting...",[](decltype(v) _){if(!(_))exit(0); return _;},v)
+#define assert(v) debug("Asserting...",[](decltype(v) _){if(!(_))exit(__LINE__); return _;},v)
 #define cttc(T,E) class = typename std::enable_if<similar_to<T,E>::value>
 template<class T,class E> struct similar_to : std::integral_constant<bool,std::is_convertible<typename std::remove_pointer<typename std::decay<T>::type>::type,E>::value> {};
 
